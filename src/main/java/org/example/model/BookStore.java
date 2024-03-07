@@ -108,12 +108,6 @@ public class BookStore {
         return true;
     }
 
-    public List<Book> getTopRatedBooks(int topN) {
-        return bookList.stream()
-                .sorted(Comparator.comparingDouble(Book::getRating).reversed())
-                .limit(topN)
-                .collect(Collectors.toList());
-    }
 
     public int getBooksSold() {
         return booksSold;

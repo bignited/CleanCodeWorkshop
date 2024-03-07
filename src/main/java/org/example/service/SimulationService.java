@@ -12,16 +12,14 @@ public class SimulationService {
     public void runSimulation() {
         BookGeneratorService bookGeneratorService = new BookGeneratorService();
         BookStoreService bookStoreService = new BookStoreService();
+        BookService bookService = new BookService();
 
         List<Book> bookList = bookGeneratorService.generateBooks();
         bookStoreService.createBookStore();
         bookStoreService.addBooks(bookList);
-        List<Book> filteredBooks = bookStoreService.getBooksFromBookStoreByTitle("Book1");
-
-        List<Book> topRatedBooks = store.getTopRatedBooks(1);
-        for (Book book : topRatedBooks) {
-            System.out.println(book.getTitle() + " - " + book.getRating());
-        }
+        List<Book> filteredBookList = bookStoreService.getBooksFromBookStoreByTitle("Book1");
+        List<Book> topRatedBookList = bookStoreService.getTopRatedBooksFromBookStore(1);
+        bookService.logBookInfo(topRatedBookList);
 
         store.updateBookDetails("Book1", "NewBook1", "NewAuthor1", 11.99);
         store.removeBook("Book1");

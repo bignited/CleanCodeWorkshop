@@ -4,12 +4,12 @@ import org.example.model.Book;
 import org.example.model.BookStore;
 import org.example.repository.BookStoreRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class BookStoreService {
-    private static final Logger LOGGER = Logger.getLogger(BookStoreService.class.getName());
     private final BookStoreRepository bookStoreRepository = new BookStoreRepository();
 
     public void createBookStore() {
@@ -22,10 +22,10 @@ public class BookStoreService {
     }
 
     public List<Book> getBooksFromBookStoreByTitle(String bookTitleToFind) {
-        LOGGER.info(String.format("Looking for books by title: %s.", bookTitleToFind));
+        LoggingService.logInfo(String.format("Looking for books by title: %s.", bookTitleToFind), this.getClass());
         List<Book> bookList = getBookListFromBookStore();
         if (bookList.isEmpty()) {
-            LOGGER.info(String.format("No books found with title: %s.", bookTitleToFind));
+            LoggingService.logInfo(String.format("No books found with title: %s.", bookTitleToFind), this.getClass());
         }
         return filterBooksByTitle(bookList, bookTitleToFind);
     }
@@ -39,10 +39,21 @@ public class BookStoreService {
         List<Book> filteredBookList = new LinkedList<>();
         for (Book book : unfilteredBookList) {
             if (book.getTitle().equalsIgnoreCase(bookTitleToFind)) {
-                LOGGER.info(String.format("Book found with title: %s.", bookTitleToFind));
+                LoggingService.logInfo(String.format("Book found with title: %s.", bookTitleToFind), this.getClass());
                 filteredBookList.add(book);
             }
         }
         return filteredBookList;
+    }
+
+    public List<Book> getTopRatedBooksFromBookStore(int amountOfBooks) {
+        List<Book> sortedBookList = sortBooksByRatingDesc();
+        return sortedBookList.subList(0, amountOfBooks);
+    }
+
+    private List<Book> sortBooksByRatingDesc() {
+        List<Book> bookList = new ArrayList<>(getBookListFromBookStore());
+        bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
+        return bookList;
     }
 }
