@@ -1,31 +1,19 @@
-package org.example;
+package org.example.model;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class Book {
     private String title;
     private String author;
     private double price;
-    private double rating;
-    private int year;
+    private double averageRating;
     private String publisher;
-    private String genre;
-    private int sales;
-    private int yearSold;
+    private String bookGenre;
     private Date publishDate;
-    private int quantity;
-    private Collection<Review> reviews;
+    private List<BookReview> bookReviews;
     private int numberOfCopiesSold;
-
-
-    public int getSales() {
-        return sales;
-    }
-
-    public void setSales(int sales) {
-        this.sales = sales;
-    }
 
     public Book(String title, String author, double price) {
         this.title = title;
@@ -45,48 +33,32 @@ public class Book {
         return price;
     }
     
-    public double getRating() {
-        return rating;
+    public double getAverageRating() {
+        return averageRating;
     }
 
     public String getPublisher() {
         return publisher;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public int fetchYear() {
-        return year;
-    }
-
-    public int retrieveYear() {
-        return year;
+    public BookGenre getBookGenre() {
+        return this.bookGenre;
     }
 
     public String fetchTitle() {
         return title;
     } 
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setBookGenre(BookGenre bookGenre) {
+        this.bookGenre = bookGenre;
     }
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     public void setTitle(String title) {
@@ -110,14 +82,6 @@ public class Book {
                 '}';
     }
 
-    public int getYearSold() {
-        return yearSold;
-    }
-
-    public void setYearSold(int yearSold) {
-        this.yearSold = yearSold;
-    }
-
     public Date getPublishDate() {
         return publishDate;
     }
@@ -126,20 +90,12 @@ public class Book {
         this.publishDate = publishDate;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public Collection<BookReview> getReviews() {
+        return bookReviews;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Collection<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Collection<Review> reviews) {
-        this.reviews = reviews;
+    public void setReviews(List<BookReview> bookReviews) {
+        this.bookReviews = bookReviews;
     }
 
     public int getNumberOfCopiesSold() {
@@ -148,5 +104,11 @@ public class Book {
 
     public void setNumberOfCopiesSold(int numberOfCopiesSold) {
         this.numberOfCopiesSold = numberOfCopiesSold;
+    }
+
+    public void printInfo() {
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Price: " + price);
     }
 }
