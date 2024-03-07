@@ -18,9 +18,7 @@ public class BookService {
 
     public void updateBookDetails(String titleOfBookToUpdate, UpdateBookDetailsValueObject updateBookDetailsValueObject) {
         Book book = getBookByTitle(titleOfBookToUpdate);
-        if (book != null) {
-            updateBookDetails(book, updateBookDetailsValueObject);
-        }
+        updateBookDetails(book, updateBookDetailsValueObject);
     }
 
     private Book getBookByTitle(String titleToFind) {
@@ -37,5 +35,11 @@ public class BookService {
         book.setTitle(updateBookDetailsValueObject.title());
         book.setAuthor(updateBookDetailsValueObject.author());
         book.setPrice(updateBookDetailsValueObject.price());
+    }
+
+    public void removeBookByTitle(String bookTitle) {
+        List<Book> bookList = bookRepository.getBookList();
+        Book bookToDelete = getBookByTitle(bookTitle);
+        bookList.remove(bookToDelete);
     }
 }

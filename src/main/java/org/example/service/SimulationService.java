@@ -25,8 +25,8 @@ public class SimulationService {
         UpdateBookDetailsValueObject updateBookDetailsValueObject = new UpdateBookDetailsValueObject(
                 "NewBook1", "NewAuthor1", 11.99);
         bookService.updateBookDetails("Book1", updateBookDetailsValueObject);
+        bookService.removeBookByTitle("Book1");
 
-        store.removeBook("Book1");
         store.sortBooksByPrice();
         store.displayBooks();
         LOGGER.info("Total number of books: " + store.getTotalBooks());
