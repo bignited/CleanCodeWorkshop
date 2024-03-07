@@ -1,7 +1,7 @@
-package org.example;
+package org.example.model;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class Book {
     private String title;
@@ -15,7 +15,7 @@ public class Book {
     private int yearSold;
     private Date publishDate;
     private int quantity;
-    private Collection<Review> reviews;
+    private List<Review> reviews;
     private int numberOfCopiesSold;
 
 
@@ -134,11 +134,11 @@ public class Book {
         this.quantity = quantity;
     }
 
-    public Collection<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Collection<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 

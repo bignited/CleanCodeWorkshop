@@ -1,7 +1,8 @@
-package org.example;
+package org.example.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.Main;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,26 +14,26 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BookStore {
-    private List<Book> books;
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private List<Book> bookList;
     private List<Review> reviews;
     private int booksSold;
     private double totalRevenue;
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
     public BookStore() {
-        this.books = new ArrayList<>();
+        this.bookList = new ArrayList<>();
         this.booksSold = 0;
         this.totalRevenue = 0.0;
     }
 
     public void addBook(Book book) {
-        this.books.add(book);
-        System.out.println("Book added: " + book.getTitle()); 
+        this.bookList.add(book);
+        System.out.println("Book added: " + book.getTitle());
     }
 
     public Book searchBookByTitle(String title) {
-        for (Book book : books) {
+        for (Book book : bookList) {
             if (book.getTitle().equals(title)) {
                 return book;
             }
@@ -52,48 +53,48 @@ public class BookStore {
     public void removeBook(String title) {
         Book book = searchBookByTitle(title);
         if (book != null) {
-            books.remove(book);
+            bookList.remove(book);
         }
     }
 
     public int getTotalBooks() {
-        return books.size();
+        return bookList.size();
     }
 
     public double getTotalPrice() {
         double total = 0.0;
-        for (Book book : books) {
+        for (Book book : bookList) {
             total += book.getPrice();
         }
         return total;
     }
 
     public void sortBooksByPrice() {
-        books.sort(Comparator.comparingDouble(Book::getPrice));
+        bookList.sort(Comparator.comparingDouble(Book::getPrice));
     }
 
     public double calculateAveragePrice() {
-        if (books.isEmpty()) {
+        if (bookList.isEmpty()) {
             return 0.0;
         }
 
         double total = 0.0;
-        for (Book book : books) {
+        for (Book book : bookList) {
             total += book.getPrice();
         }
-        return total / books.size();
+        return total / bookList.size();
     }
 
     public void displayBooks() {
-        for (Book book : books) {
+        for (Book book : bookList) {
             System.out.println(book);
         }
     }
 
-    public void sellBook(String title){
+    public void sellBook(String title) {
         Book book = searchBookByTitle(title);
-        if (book != null){
-            books.remove(book);
+        if (book != null) {
+            bookList.remove(book);
             booksSold++;
             totalRevenue += book.getPrice();
         }
@@ -103,33 +104,34 @@ public class BookStore {
         if (book == null) {
             return false;
         }
-        this.books.add(book);
+        this.bookList.add(book);
         return true;
     }
 
     public List<Book> getTopRatedBooks(int topN) {
-        return books.stream()
+        return bookList.stream()
                 .sorted(Comparator.comparingDouble(Book::getRating).reversed())
                 .limit(topN)
                 .collect(Collectors.toList());
     }
-    public int getBooksSold(){
+
+    public int getBooksSold() {
         return booksSold;
     }
 
-    public double getTotalRevenue(){
+    public double getTotalRevenue() {
         return totalRevenue;
     }
 
     public List<Book> getBooksByRatingRange(double minRating, double maxRating) {
-        return books.stream()
+        return bookList.stream()
                 .filter(book -> book.getRating() >= minRating && book.getRating() <= maxRating)
                 .sorted(Comparator.comparingDouble(Book::getRating).reversed())
                 .collect(Collectors.toList());
     }
 
     public List<Book> getBooksSortedByPrice() {
-        return books.stream()
+        return bookList.stream()
                 .sorted(Comparator.comparingDouble(Book::getPrice))
                 .collect(Collectors.toList());
     }
@@ -137,7 +139,7 @@ public class BookStore {
     public void updateBookPrice(String title, double newPrice) {
         if (title != null) {
             if (newPrice > 0) {
-                for (Book book : this.books) {
+                for (Book book : this.bookList) {
                     if (book.getTitle().equals(title)) {
                         book.setPrice(newPrice);
                         return;
@@ -153,7 +155,8 @@ public class BookStore {
         // code to read books from a file
         Gson gson = new Gson();
         try {
-            Type bookListType = new TypeToken<List<Book>>(){}.getType();
+            Type bookListType = new TypeToken<List<Book>>() {
+            }.getType();
             List<Book> books = gson.fromJson(new FileReader("src/main/java/org/example/books.json"), bookListType);
             for (Book book : books) {
                 this.addBook(book);
@@ -173,7 +176,7 @@ public class BookStore {
     }
 
     public void addbook(Book book) {
-        this.books.add(book);
+        this.bookList.add(book);
         System.out.println("Book added: " + book.getTitle());
     }
 
@@ -187,17 +190,17 @@ public class BookStore {
         int year = book.getYear();
         addBookWithArguments(title, author, price, rating, genre, publisher, year);
     }
-    
+
     public void addBookWithHighRating(Book book) {
-        if (book.getRating() > 4.5) { 
-            this.books.add(book);
+        if (book.getRating() > 4.5) {
+            this.bookList.add(book);
         }
     }
-    
+
     public Book findBookByTitleAndAuthor(String title, String author) {
         if (title != null) {
             if (author != null) {
-                for (Book book : this.books) {
+                for (Book book : this.bookList) {
                     if (book.getTitle().equals(title)) {
                         if (book.getAuthor().equals(author)) {
                             return book;
@@ -210,27 +213,27 @@ public class BookStore {
     }
 
     public void addBookWithDeadCode(Book book) {
-        this.books.add(book);
+        this.bookList.add(book);
         if (false) {
             System.out.println("Something went wrong!");
         }
     }
 
     public void addBookAndCalculateAverageRating(Book book) {
-        this.books.add(book);
+        this.bookList.add(book);
         this.calculateAverageRating(); // must be called after addBook
     }
 
     public double calculateAverageRating() {
-        if (books.isEmpty()) {
+        if (bookList.isEmpty()) {
             return 0.0;
         }
 
         double total = 0.0;
-        for (Book book : books) {
+        for (Book book : bookList) {
             total += book.getRating();
         }
-        return total / books.size();
+        return total / bookList.size();
     }
 
     public void displayBooks(boolean sortByPrice) {
@@ -243,16 +246,16 @@ public class BookStore {
     }
 
     public void sortBooksByRating() {
-        books.sort(Comparator.comparingDouble(Book::getRating).reversed());
+        bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
     }
 
     public void updateBookPrice(Book book, double newPrice) {
         book.setPrice(newPrice);
     }
-    
+
     public void addAnotherBook(Book book) {
         // add the book to the list
-        this.books.add(book);
+        this.bookList.add(book);
         System.out.println("Book added: " + book.fetchTitle());
     }
 
@@ -262,37 +265,37 @@ public class BookStore {
         book.setGenre(genre);
         book.setPublisher(publisher);
         book.setYear(year);
-        this.books.add(book);
+        this.bookList.add(book);
     }
 
     public void sellBooks(String title) {
         Book book = searchBookByTitle(title);
         if (book != null) {
-        this.books.remove(book);
-        this.booksSold++;
-        this.totalRevenue += book.getPrice();
+            this.bookList.remove(book);
+            this.booksSold++;
+            this.totalRevenue += book.getPrice();
         } else {
-        System.out.println("Book not found");
+            System.out.println("Book not found");
         }
     }
-    
+
 
     public void addBookWithTooManyStatements(Book book) {
         if (book.getRating() > 4.5) {
-            this.books.add(book);
+            this.bookList.add(book);
         } else {
             System.out.println("Book not added: " + book.getTitle());
         }
     }
 
-    
+
     public void removeBookByTitleAndAuthor(String title, String author) {
         if (title != null) {
             if (author != null) {
-                for (Book book : this.books) {
+                for (Book book : this.bookList) {
                     if (book.getTitle().equals(title)) {
                         if (book.getAuthor().equals(author)) {
-                            this.books.remove(book);
+                            this.bookList.remove(book);
                             System.out.println("Book removed: " + book.getTitle());
                             return;
                         }
@@ -306,9 +309,9 @@ public class BookStore {
         try {
             if (title != null) {
                 if (author != null) {
-                    for (Book book : this.books) {
+                    for (Book book : this.bookList) {
                         if (book.getTitle().equals(title) && book.getAuthor().equals(author)) {
-                            this.books.remove(book);
+                            this.bookList.remove(book);
                             System.out.println("Book sold: " + book.getTitle());
                             return;
                         }
@@ -316,7 +319,7 @@ public class BookStore {
                 }
             }
         } catch (Exception e) {
-            System.out.println("An error occurred"); 
+            System.out.println("An error occurred");
         }
     }
 
@@ -326,7 +329,7 @@ public class BookStore {
         Matcher matcher = pattern.matcher(title);
 
         if (matcher.matches()) {
-            this.books.add(book);
+            this.bookList.add(book);
             System.out.println("Book added: " + book.getTitle());
         } else {
             System.out.println("Book title is not valid. It should contain at least one letter, one number, and one special character.");
@@ -347,13 +350,13 @@ public class BookStore {
     }
 
     public void addBookAndPrintReceipt(Book book) {
-        this.books.add(book);
+        this.bookList.add(book);
         System.out.println("Book added: " + book.getTitle());
         printReceipt(book);
     }
 
     public void addBook(Book book, boolean printReceipt) {
-        this.books.add(book);
+        this.bookList.add(book);
         System.out.println("Book added: " + book.getTitle());
         if (printReceipt) {
             printReceipt(book);
@@ -362,7 +365,7 @@ public class BookStore {
 
     public List<Book> searchBookByAuthor(String author) {
         List<Book> result = new ArrayList<>();
-        for (Book book : this.books) {
+        for (Book book : this.bookList) {
             if (book.getAuthor().equalsIgnoreCase(author)) {
                 result.add(book);
             }
@@ -372,7 +375,7 @@ public class BookStore {
 
     public List<Book> filterBooksByGenre(String genre) {
         List<Book> result = new ArrayList<>();
-        for (Book book : this.books) {
+        for (Book book : this.bookList) {
             if (book.getGenre().equalsIgnoreCase(genre)) {
                 result.add(book);
             }
@@ -382,7 +385,7 @@ public class BookStore {
 
     public double yearlySalesReport(int year) {
         double totalSales = 0;
-        for (Book book : this.books) {
+        for (Book book : this.bookList) {
             if (book.getYearSold() == year) {
                 totalSales += book.getPrice() * book.getSales();
             }
@@ -397,7 +400,7 @@ public class BookStore {
         cal.add(Calendar.YEAR, -1); // Subtract 1 year
         oneYearAgo = cal.getTime();
 
-        for (Book book : this.books) {
+        for (Book book : this.bookList) {
             if (book.getPublishDate().before(oneYearAgo)) {
                 double newPrice = book.getPrice() * (1 - discountRate);
                 book.setPrice(newPrice);
@@ -408,7 +411,7 @@ public class BookStore {
     public void restockBook(Book book, int additionalQuantity) {
         book.setQuantity(book.getQuantity() + additionalQuantity);
     }
-    
+
 
     public void addReview(Book book, Review review) {
         book.getReviews().add(review);
@@ -429,7 +432,7 @@ public class BookStore {
     }
 
     public void sortBooksByAverageRating() {
-        Collections.sort(this.books, new Comparator<Book>() {
+        Collections.sort(this.bookList, new Comparator<Book>() {
             @Override
             public int compare(Book b1, Book b2) {
                 double avgRating1 = calculateAverageRating(b1);
@@ -441,24 +444,32 @@ public class BookStore {
 
     public double calculateTotalRevenue() {
         double totalRevenue = 0;
-        for (Book book : this.books) {
+        for (Book book : this.bookList) {
             totalRevenue += book.getPrice() * booksSold;
         }
         return totalRevenue;
     }
 
     public Book findBestSellingBook() {
-        if (this.books.isEmpty()) {
+        if (this.bookList.isEmpty()) {
             return null; // or you might choose to throw an exception
         }
 
-        Book bestSellingBook = this.books.get(0);
-        for (Book book : this.books) {
+        Book bestSellingBook = this.bookList.get(0);
+        for (Book book : this.bookList) {
             if (book.getNumberOfCopiesSold() > bestSellingBook.getNumberOfCopiesSold()) {
                 bestSellingBook = book;
             }
         }
 
         return bestSellingBook;
+    }
+
+    public void addBooks(List<Book> bookList) {
+        this.bookList.addAll(bookList);
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
     }
 }
