@@ -27,6 +27,7 @@ public class SimulationService {
         bookService.updateBookDetails("Book1", updateBookDetailsValueObject);
         bookService.removeBookByTitle("Book1");
 
+        List<Book> orderedByPriceBookList = bookStoreService.sortBooksFromBookStoreByPrice();
         store.sortBooksByPrice();
         store.displayBooks();
         LOGGER.info("Total number of books: " + store.getTotalBooks());

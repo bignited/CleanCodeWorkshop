@@ -56,4 +56,10 @@ public class BookStoreService {
         bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
         return bookList;
     }
+
+    public List<Book> sortBooksFromBookStoreByPrice() {
+        List<Book> bookList = new ArrayList<>(getBookListFromBookStore());
+        bookList.sort(Comparator.comparingDouble(Book::getPrice));
+        return bookList;
+    }
 }
