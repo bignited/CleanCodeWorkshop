@@ -41,15 +41,6 @@ public class BookStore {
         return null;
     }
 
-    public void updateBookDetails(String title, String newTitle, String newAuthor, double newPrice) {
-        Book book = searchBookByTitle(title);
-        if (book != null) {
-            book.setTitle(newTitle);
-            book.setAuthor(newAuthor);
-            book.setPrice(newPrice);
-        }
-    }
-
     public void removeBook(String title) {
         Book book = searchBookByTitle(title);
         if (book != null) {

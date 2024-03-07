@@ -12,7 +12,7 @@ public class BookGeneratorService {
         LoggingService.logInfo("Generating new books.", this.getClass());
         List<Book> bookList = new ArrayList<>();
         for (int i = 0; i < AMOUNT_OF_BOOKS; i++) {
-            Book newBook = new Book("Title" + i, "Author" + i, 10.0 + i);
+            Book newBook = new Book("Book" + i, "Author" + i, 10.0 + i);
             bookList.add(newBook);
         }
         return bookList;

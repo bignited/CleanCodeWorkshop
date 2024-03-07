@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.Main;
 import org.example.model.Book;
+import org.example.valueobject.UpdateBookDetailsValueObject;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,7 +22,10 @@ public class SimulationService {
         List<Book> topRatedBookList = bookStoreService.getTopRatedBooksFromBookStore(1);
         bookService.logBookInfo(topRatedBookList);
 
-        store.updateBookDetails("Book1", "NewBook1", "NewAuthor1", 11.99);
+        UpdateBookDetailsValueObject updateBookDetailsValueObject = new UpdateBookDetailsValueObject(
+                "NewBook1", "NewAuthor1", 11.99);
+        bookService.updateBookDetails("Book1", updateBookDetailsValueObject);
+
         store.removeBook("Book1");
         store.sortBooksByPrice();
         store.displayBooks();
