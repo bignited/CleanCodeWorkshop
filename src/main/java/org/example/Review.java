@@ -1,12 +1,10 @@
 package org.example;
 
-import java.util.Collection;
-
 public class Review {
     private String description;
     private double rating;
 
-    public Review(String description){
+    public Review(String description) {
         this.description = description;
     }
 
@@ -20,5 +18,9 @@ public class Review {
 
     public double getRating() {
         return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

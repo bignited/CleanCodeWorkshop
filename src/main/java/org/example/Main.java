@@ -1,14 +1,11 @@
 package org.example;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,25 +27,26 @@ public class Main {
             LOGGER.severe(e.getMessage());
         }
 
-        Book searchedBook = store.searchBookByTitle("Book1");
+        Book searchedBook = store.getBookByTitle("Book1");
         if (searchedBook != null) {
             LOGGER.info("Found book: " + searchedBook);
         } else {
             LOGGER.info("Book not found");
         }
 
-        List<Book> topRatedBooks = store.getTopRatedBooks(1);
+        List<Book> topRatedBooks = store.getAmountOfTopRatedBooks(1);
         for (Book book : topRatedBooks) {
             System.out.println(book.getTitle() + " - " + book.getRating());
         }
 
-        store.updateBookDetails("Book1", "NewBook1", "NewAuthor1", 11.99);
+        Book book1 = store.getBookByTitle("Book1");
+        book1.updateBookDetails( "NewBook1", "NewAuthor1", 11.99);
         store.removeBook("Book1");
         store.sortBooksByPrice();
         store.displayBooks();
         LOGGER.info("Total number of books: " + store.getTotalBooks());
-        LOGGER.info("Total price of all books: " + store.getTotalPrice());
-        LOGGER.info("Average price of books: " + store.calculateAveragePrice());
+        LOGGER.info("Total price of all books: " + store.calculateTotalPriceOfAllBooks());
+        LOGGER.info("Average price of books: " + store.calculateAveragePriceOfAllBooks());
         store.sellBook("Book2");
         LOGGER.info("Total revenue: " + store.getTotalRevenue());
         LOGGER.info("Number of books sold: " + store.getBooksSold());
@@ -65,7 +63,7 @@ public class Main {
         }
 
         store.processBooks();
-        store.displayBooks(true);
+        store.displayBooksSortedByPriceOrRating(true);
         store.updateBookPrice("book1", 50)                                                                                                                                                                                                                                                                                          ;
     }
 }
