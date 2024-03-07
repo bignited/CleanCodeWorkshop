@@ -1,14 +1,8 @@
 package org.example.service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.example.Main;
 import org.example.model.Book;
-import org.example.model.BookStore;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,17 +13,10 @@ public class SimulationService {
         BookGeneratorService bookGeneratorService = new BookGeneratorService();
         BookStoreService bookStoreService = new BookStoreService();
 
-        bookStoreService.createBookStore();
         List<Book> bookList = bookGeneratorService.generateBooks();
+        bookStoreService.createBookStore();
         bookStoreService.addBooks(bookList);
-
-
-        Book searchedBook = store.searchBookByTitle("Book1");
-        if (searchedBook != null) {
-            LOGGER.info("Found book: " + searchedBook);
-        } else {
-            LOGGER.info("Book not found");
-        }
+        List<Book> filteredBooks = bookStoreService.getBooksFromBookStoreByTitle("Book1");
 
         List<Book> topRatedBooks = store.getTopRatedBooks(1);
         for (Book book : topRatedBooks) {
