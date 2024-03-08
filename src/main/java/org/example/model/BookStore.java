@@ -26,11 +26,6 @@ public class BookStore {
         this.totalRevenue = 0.0;
     }
 
-    public void addBook(Book book) {
-        this.bookList.add(book);
-        System.out.println("Book added: " + book.getTitle());
-    }
-
     public Book searchBookByTitle(String title) {
         for (Book book : bookList) {
             if (book.getTitle().equals(title)) {
@@ -40,14 +35,7 @@ public class BookStore {
         return null;
     }
 
-    public void removeBook(String title) {
-        Book book = searchBookByTitle(title);
-        if (book != null) {
-            bookList.remove(book);
-        }
-    }
-
-    public int getTotalBooks() {
+     public int getTotalBooks() {
         return bookList.size();
     }
 
@@ -115,31 +103,6 @@ public class BookStore {
             }
         }
         System.out.println("Failed to update book price");
-    }
-
-
-    public void processBooks() {
-        // code to read books from a file
-        Gson gson = new Gson();
-        try {
-            Type bookListType = new TypeToken<List<Book>>() {
-            }.getType();
-            List<Book> books = gson.fromJson(new FileReader("src/main/java/org/example/books.json"), bookListType);
-            for (Book book : books) {
-                this.addBook(book);
-            }
-        } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
-        }
-
-        // code to display books
-        this.displayBooks();
-
-        // code to sort books by price
-        this.sortBooksByPrice();
-
-        // code to display books again
-        this.displayBooks();
     }
 
     public void addbook(Book book) {
@@ -381,14 +344,6 @@ public class BookStore {
         });
     }
 
-    public double calculateTotalRevenue() {
-        double totalRevenue = 0;
-        for (Book book : this.bookList) {
-            totalRevenue += book.getPrice() * booksSold;
-        }
-        return totalRevenue;
-    }
-
     public Book findBestSellingBook() {
         if (this.bookList.isEmpty()) {
             return null; // or you might choose to throw an exception
@@ -404,19 +359,15 @@ public class BookStore {
         return bestSellingBook;
     }
 
-    public void addBooks(List<Book> bookList) {
-        this.bookList.addAll(bookList);
-    }
-
     public List<Book> getBookList() {
         return bookList;
     }
 
-    public void increaseAmountOfBooksSold(int amount) {
-        this.booksSold += amount;
+    public void setTotalRevenue(double totalRevenue) {
+        this.totalRevenue = totalRevenue;
     }
 
-    public void increaseTotalRevenue(double totalSellPrice) {
-        this.totalRevenue += totalSellPrice;
+    public void setTotalBooksSold(int totalBooksSold) {
+        this.totalBooksSold = totalBooksSold;
     }
 }

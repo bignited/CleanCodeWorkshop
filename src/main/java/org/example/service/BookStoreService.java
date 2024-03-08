@@ -107,8 +107,9 @@ public class BookStoreService {
             amountOfBooksSold++;
             totalSellPrice += bookToSell.getPrice();
         }
-        bookStoreRepository.getBookStore().increaseAmountOfBooksSold(amountOfBooksSold);
-        bookStoreRepository.getBookStore().increaseTotalRevenue(totalSellPrice);
+        BookStore bookStore = bookStoreRepository.getBookStore();
+        bookStore.setTotalBooksSold(bookStore.getTotalBooksSold() + amountOfBooksSold);
+        bookStore.setTotalRevenue(bookStore.getTotalRevenue() + totalSellPrice);
     }
 
     private double sellBook(Book bookToSell) {
@@ -129,5 +130,12 @@ public class BookStoreService {
 
     public int getTotalBooksSold() {
         return bookStoreRepository.getBookStore().getTotalBooksSold();
+    }
+
+    public void logAllBookStoreBooks() {
+        List<Book> bookList = getBookListFromBookStore();
+        for (Book book : bookList) {
+            book.logBookInfo();
+        }
     }
 }

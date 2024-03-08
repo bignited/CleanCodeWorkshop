@@ -1,15 +1,12 @@
 package org.example.service;
 
-import org.example.Main;
 import org.example.model.Book;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class SimulationService {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public void runSimulation() {
         BookGeneratorService bookGeneratorService = new BookGeneratorService();
@@ -49,7 +46,7 @@ public class SimulationService {
         int totalAmountOfBooksSold = bookStoreService.getTotalBooksSold();
         LoggingService.logInfo(String.format("Total amount of books sold: %d", totalAmountOfBooksSold), this.getClass());
 
-        store.displayBooks();
+        bookStoreService.logAllBookStoreBooks();
 
         List<Book> booksByRatingRange = store.getBooksByRatingRange(3, 5);
         for (Book book : booksByRatingRange) {
