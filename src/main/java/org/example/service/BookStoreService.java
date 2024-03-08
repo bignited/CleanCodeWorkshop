@@ -117,7 +117,7 @@ public class BookStoreService {
         for (Book book : bookList) {
             if (book.equals(bookToSell)) {
                 bookList.remove(book);
-                book.increaseCopiesSold(1);
+                book.setNumberOfCopiesSold(book.getNumberOfCopiesSold() + 1);
                 return book.getPrice();
             }
         }
