@@ -43,8 +43,8 @@ public class SimulationService {
         bookTitleAuthorMap.put("Book2", "Author2");
         bookStoreService.sellBooksByTitleAndAuthorName(bookTitleAuthorMap);
 
-
-        LOGGER.info("Total revenue: " + store.getTotalRevenue());
+        double totalBookStoreRevenue = bookStoreService.getBookStoreTotalRevenue();
+        LoggingService.logInfo(String.format("Total revenue of bookstore: %f.2", totalBookStoreRevenue), this.getClass());
         LOGGER.info("Number of books sold: " + store.getBooksSold());
         store.displayBooks();
 

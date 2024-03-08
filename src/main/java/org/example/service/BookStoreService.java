@@ -101,22 +101,29 @@ public class BookStoreService {
     }
 
     public void sellBookFromBookStore(Book bookToSell) {
+        double totalSellPrice = 0;
         int amountOfBooksSold = 0;
-        if(sellBook(bookToSell)) {
+        if (sellBook(bookToSell) > 0) {
             amountOfBooksSold++;
+            totalSellPrice += bookToSell.getPrice();
         }
         bookStoreRepository.getBookStore().increaseAmountOfBooksSold(amountOfBooksSold);
+        bookStoreRepository.getBookStore().increaseTotalRevenue(totalSellPrice);
     }
 
-    private boolean sellBook(Book bookToSell) {
+    private double sellBook(Book bookToSell) {
         List<Book> bookList = getBookListFromBookStore();
         for (Book book : bookList) {
             if (book.equals(bookToSell)) {
                 bookList.remove(book);
                 book.increaseCopiesSold(1);
-                return true;
+                return book.getPrice();
             }
         }
-        return false;
+        return 0;
+    }
+
+    public double getBookStoreTotalRevenue() {
+        return bookStoreRepository.getBookStore().getTotalRevenue();
     }
 }

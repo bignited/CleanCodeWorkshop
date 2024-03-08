@@ -32,10 +32,6 @@ public class Book {
         return sales;
     }
 
-    public void setSales(int sales) {
-        this.sales = sales;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -92,41 +88,16 @@ public class Book {
         this.year = year;
     }
 
-    public int fetchYear() {
-        return year;
-    }
-
-    public int retrieveYear() {
-        return year;
-    }
-
     public String fetchTitle() {
         return title;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", price=" + price +
-                '}';
     }
 
     public int getYearSold() {
         return yearSold;
     }
 
-    public void setYearSold(int yearSold) {
-        this.yearSold = yearSold;
-    }
-
     public Date getPublishDate() {
         return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
     }
 
     public int getQuantity() {
@@ -141,19 +112,11 @@ public class Book {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
     public int getNumberOfCopiesSold() {
         return numberOfCopiesSold;
     }
 
-    public void setNumberOfCopiesSold(int numberOfCopiesSold) {
-        this.numberOfCopiesSold = numberOfCopiesSold;
-    }
-
-    public void logInfo() {
+    public void logBookInfo() {
         String bookInfo = String.format("Title: %s, Author: %s, Price: %.2f, Rating: %.2f",
                 title, author, price, rating);
         LoggingService.logInfo(bookInfo, this.getClass());

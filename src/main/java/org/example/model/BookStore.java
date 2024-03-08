@@ -263,7 +263,6 @@ public class BookStore {
     }
 
 
-
     public void addBookIfTitleIsValid(Book book) {
         String title = book.getTitle();
         Pattern pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[ .,!?'\"-])[a-zA-Z0-9 .,!?'\"-]{1,50}$");
@@ -414,7 +413,11 @@ public class BookStore {
         return bookList;
     }
 
-    public void increaseAmountOfBooksSold(int i) {
+    public void increaseAmountOfBooksSold(int amount) {
+        this.booksSold += amount;
+    }
 
+    public void increaseTotalRevenue(double totalSellPrice) {
+        this.totalRevenue += totalSellPrice;
     }
 }

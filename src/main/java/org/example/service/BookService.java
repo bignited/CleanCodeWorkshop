@@ -12,7 +12,7 @@ public class BookService {
 
     public void logBookInfo(List<Book> bookList) {
         for (Book book : bookList) {
-            book.logInfo();
+            book.logBookInfo();
         }
     }
 
