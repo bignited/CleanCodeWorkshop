@@ -138,4 +138,19 @@ public class BookStoreService {
             book.logBookInfo();
         }
     }
+
+    public List<Book> getBooksByRatingRange(double minRating, double maxRating) {
+        List<Book> bookList = getBookListFromBookStore();
+        List<Book> filteredBookList = new LinkedList<>();
+        for (Book book : bookList) {
+            if (isBookRatingInRange(book.getRating(), minRating, maxRating)) {
+                filteredBookList.add(book);
+            }
+        }
+        return filteredBookList;
+    }
+
+    private boolean isBookRatingInRange(double bookRating, double minRating, double maxRating) {
+        return bookRating >= minRating && bookRating <= maxRating;
+    }
 }

@@ -78,13 +78,6 @@ public class BookStore {
         return totalRevenue;
     }
 
-    public List<Book> getBooksByRatingRange(double minRating, double maxRating) {
-        return bookList.stream()
-                .filter(book -> book.getRating() >= minRating && book.getRating() <= maxRating)
-                .sorted(Comparator.comparingDouble(Book::getRating).reversed())
-                .collect(Collectors.toList());
-    }
-
     public List<Book> getBooksSortedByPrice() {
         return bookList.stream()
                 .sorted(Comparator.comparingDouble(Book::getPrice))

@@ -48,10 +48,8 @@ public class SimulationService {
 
         bookStoreService.logAllBookStoreBooks();
 
-        List<Book> booksByRatingRange = store.getBooksByRatingRange(3, 5);
-        for (Book book : booksByRatingRange) {
-            System.out.println(book.getTitle() + " - " + book.getRating());
-        }
+        List<Book> booksByRatingRange = bookStoreService.getBooksByRatingRange(3, 5);
+        bookService.logBookInfo(booksByRatingRange);
 
         List<Book> booksSortedByPrice = store.getBooksSortedByPrice();
         for (Book book : booksSortedByPrice) {
