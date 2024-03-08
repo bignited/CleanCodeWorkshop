@@ -4,6 +4,7 @@ import org.example.service.LoggingService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Book {
     private String title;
@@ -156,5 +157,21 @@ public class Book {
         String bookInfo = String.format("Title: %s, Author: %s, Price: %.2f, Rating: %.2f",
                 title, author, price, rating);
         LoggingService.logInfo(bookInfo, this.getClass());
+    }
+
+    public void increaseCopiesSold(int amountOfSoldCopies) {
+        this.numberOfCopiesSold += amountOfSoldCopies;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return Objects.equals(title, book.title) && Objects.equals(author, book.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author);
     }
 }

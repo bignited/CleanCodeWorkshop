@@ -74,15 +74,6 @@ public class BookStore {
         }
     }
 
-    public void sellBook(String title) {
-        Book book = searchBookByTitle(title);
-        if (book != null) {
-            bookList.remove(book);
-            booksSold++;
-            totalRevenue += book.getPrice();
-        }
-    }
-
     public boolean onlyAddBookIfNotNull(Book book) {
         if (book == null) {
             return false;
@@ -245,17 +236,6 @@ public class BookStore {
         this.bookList.add(book);
     }
 
-    public void sellBooks(String title) {
-        Book book = searchBookByTitle(title);
-        if (book != null) {
-            this.bookList.remove(book);
-            this.booksSold++;
-            this.totalRevenue += book.getPrice();
-        } else {
-            System.out.println("Book not found");
-        }
-    }
-
 
     public void addBookWithTooManyStatements(Book book) {
         if (book.getRating() > 4.5) {
@@ -282,23 +262,7 @@ public class BookStore {
         }
     }
 
-    public void sellBook(String title, String author) {
-        try {
-            if (title != null) {
-                if (author != null) {
-                    for (Book book : this.bookList) {
-                        if (book.getTitle().equals(title) && book.getAuthor().equals(author)) {
-                            this.bookList.remove(book);
-                            System.out.println("Book sold: " + book.getTitle());
-                            return;
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred");
-        }
-    }
+
 
     public void addBookIfTitleIsValid(Book book) {
         String title = book.getTitle();
@@ -448,5 +412,9 @@ public class BookStore {
 
     public List<Book> getBookList() {
         return bookList;
+    }
+
+    public void increaseAmountOfBooksSold(int i) {
+
     }
 }

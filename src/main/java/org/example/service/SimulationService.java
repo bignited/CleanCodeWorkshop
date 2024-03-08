@@ -4,6 +4,7 @@ import org.example.Main;
 import org.example.model.Book;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,10 +34,16 @@ public class SimulationService {
         int totalBooksInBookStore = bookStoreService.getTotalBooksFromBookStore();
         LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore), this.getClass());
 
-        double totalPriceOfBooks = bookStoreService.calculateTotalPrice();
-        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooks), this.getClass());
-        LOGGER.info("Average price of books: " + store.calculateAveragePrice());
-        store.sellBook("Book2");
+        double totalPriceOfBooksInBookStore = bookStoreService.calculateTotalBookPrice();
+        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooksInBookStore), this.getClass());
+        double averageBookPriceInBookStore = bookStoreService.calculateAverageBookPriceInBookStore();
+        LoggingService.logInfo(String.format("Average price of books: %f.2", averageBookPriceInBookStore), this.getClass());
+
+        HashMap<String, String> bookTitleAuthorMap = new HashMap<>();
+        bookTitleAuthorMap.put("Book2", "Author2");
+        bookStoreService.sellBooksByTitleAndAuthorName(bookTitleAuthorMap);
+
+
         LOGGER.info("Total revenue: " + store.getTotalRevenue());
         LOGGER.info("Number of books sold: " + store.getBooksSold());
         store.displayBooks();
