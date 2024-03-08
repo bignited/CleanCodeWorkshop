@@ -153,4 +153,10 @@ public class BookStoreService {
     private boolean isBookRatingInRange(double bookRating, double minRating, double maxRating) {
         return bookRating >= minRating && bookRating <= maxRating;
     }
+
+    public List<Book> getBooksSortedByPrice() {
+        List<Book> bookList = new ArrayList<>(getBookListFromBookStore());
+        bookList.sort(Comparator.comparingDouble(Book::getPrice).reversed());
+        return bookList;
+    }
 }

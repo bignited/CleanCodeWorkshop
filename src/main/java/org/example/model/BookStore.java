@@ -78,12 +78,6 @@ public class BookStore {
         return totalRevenue;
     }
 
-    public List<Book> getBooksSortedByPrice() {
-        return bookList.stream()
-                .sorted(Comparator.comparingDouble(Book::getPrice))
-                .collect(Collectors.toList());
-    }
-
     public void updateBookPrice(String title, double newPrice) {
         if (title != null) {
             if (newPrice > 0) {
