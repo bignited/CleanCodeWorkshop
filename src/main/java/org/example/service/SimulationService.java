@@ -54,8 +54,8 @@ public class SimulationService {
         List<Book> booksSortedByPrice = bookStoreService.getBooksSortedByPrice();
         bookService.logBookInfo(booksSortedByPrice);
 
-        store.processBooks();
-        store.displayBooks(true);
-        store.updateBookPrice("book1", 50);
+        UpdateBookDetailsValueObject updateBookDetailsValueObjectPrice = new UpdateBookDetailsValueObject(
+                "Book1", "Author1", 50);
+        bookService.updateBookDetails("Book1", updateBookDetailsValueObjectPrice);
     }
 }

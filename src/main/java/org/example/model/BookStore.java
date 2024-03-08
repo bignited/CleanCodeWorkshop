@@ -153,15 +153,6 @@ public class BookStore {
         return total / bookList.size();
     }
 
-    public void displayBooks(boolean sortByPrice) {
-        if (sortByPrice) {
-            this.sortBooksByPrice();
-        } else {
-            this.sortBooksByRating();
-        }
-        this.displayBooks();
-    }
-
     public void sortBooksByRating() {
         bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
     }
