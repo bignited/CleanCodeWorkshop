@@ -45,7 +45,10 @@ public class SimulationService {
 
         double totalBookStoreRevenue = bookStoreService.getBookStoreTotalRevenue();
         LoggingService.logInfo(String.format("Total revenue of bookstore: %f.2", totalBookStoreRevenue), this.getClass());
-        LOGGER.info("Number of books sold: " + store.getBooksSold());
+
+        int totalAmountOfBooksSold = bookStoreService.getTotalBooksSold();
+        LoggingService.logInfo(String.format("Total amount of books sold: %d", totalAmountOfBooksSold), this.getClass());
+
         store.displayBooks();
 
         List<Book> booksByRatingRange = store.getBooksByRatingRange(3, 5);

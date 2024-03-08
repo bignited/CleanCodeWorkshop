@@ -126,4 +126,8 @@ public class BookStoreService {
     public double getBookStoreTotalRevenue() {
         return bookStoreRepository.getBookStore().getTotalRevenue();
     }
+
+    public int getTotalBooksSold() {
+        return bookStoreRepository.getBookStore().getTotalBooksSold();
+    }
 }

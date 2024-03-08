@@ -17,13 +17,12 @@ public class BookStore {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private List<Book> bookList;
     private List<Review> reviews;
-    private int booksSold;
+    private int totalBooksSold;
     private double totalRevenue;
 
 
     public BookStore() {
         this.bookList = new ArrayList<>();
-        this.booksSold = 0;
         this.totalRevenue = 0.0;
     }
 
@@ -83,8 +82,8 @@ public class BookStore {
     }
 
 
-    public int getBooksSold() {
-        return booksSold;
+    public int getTotalBooksSold() {
+        return totalBooksSold;
     }
 
     public double getTotalRevenue() {
