@@ -28,8 +28,10 @@ public class SimulationService {
         bookService.removeBookByTitle("Book1");
 
         List<Book> orderedByPriceBookList = bookStoreService.sortBooksFromBookStoreByPrice();
-        store.sortBooksByPrice();
-        store.displayBooks();
+        bookService.logBookInfo(orderedByPriceBookList);
+
+        int totalBooksInBookStore = bookStoreService.getTotalBooksFromBookStore();
+        LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore), this.getClass());
         LOGGER.info("Total number of books: " + store.getTotalBooks());
         LOGGER.info("Total price of all books: " + store.getTotalPrice());
         LOGGER.info("Average price of books: " + store.calculateAveragePrice());

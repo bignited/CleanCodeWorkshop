@@ -62,4 +62,9 @@ public class BookStoreService {
         bookList.sort(Comparator.comparingDouble(Book::getPrice));
         return bookList;
     }
+
+    public int getTotalBooksFromBookStore() {
+        List<Book> bookList = getBookListFromBookStore();
+        return bookList.size();
+    }
 }
