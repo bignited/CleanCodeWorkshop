@@ -32,8 +32,9 @@ public class SimulationService {
 
         int totalBooksInBookStore = bookStoreService.getTotalBooksFromBookStore();
         LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore), this.getClass());
-        LOGGER.info("Total number of books: " + store.getTotalBooks());
-        LOGGER.info("Total price of all books: " + store.getTotalPrice());
+
+        double totalPriceOfBooks = bookStoreService.calculateTotalPrice();
+        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooks), this.getClass());
         LOGGER.info("Average price of books: " + store.calculateAveragePrice());
         store.sellBook("Book2");
         LOGGER.info("Total revenue: " + store.getTotalRevenue());

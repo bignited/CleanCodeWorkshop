@@ -52,14 +52,6 @@ public class BookStore {
         return bookList.size();
     }
 
-    public double getTotalPrice() {
-        double total = 0.0;
-        for (Book book : bookList) {
-            total += book.getPrice();
-        }
-        return total;
-    }
-
     public void sortBooksByPrice() {
         bookList.sort(Comparator.comparingDouble(Book::getPrice));
     }

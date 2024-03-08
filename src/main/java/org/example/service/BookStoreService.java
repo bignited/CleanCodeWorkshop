@@ -67,4 +67,13 @@ public class BookStoreService {
         List<Book> bookList = getBookListFromBookStore();
         return bookList.size();
     }
+
+    public double calculateTotalPrice() {
+        List<Book> bookList = getBookListFromBookStore();
+        double total = 0;
+        for (Book book : bookList) {
+            total += book.getPrice();
+        }
+        return total;
+    }
 }
