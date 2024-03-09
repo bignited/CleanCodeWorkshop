@@ -19,3 +19,4 @@
 - getBookStoreTotalRevenue():double [BookStoreService]
 - getBooksByRatingRange(double minRating, double maxRating):List<Book> [BookStoreService]
 - getBooksSortedByPrice():List<Book> [BookStoreService]
+--THE END--
