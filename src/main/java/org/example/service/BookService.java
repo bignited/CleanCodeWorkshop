@@ -2,9 +2,11 @@ package org.example.service;
 
 import org.example.exception.BookException;
 import org.example.model.Book;
+import org.example.model.BookDetails;
 import org.example.repository.BookRepository;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookService {
@@ -41,5 +43,20 @@ public class BookService {
         List<Book> bookList = bookRepository.getBookList();
         Book bookToDelete = getBookByTitle(bookTitle);
         bookList.remove(bookToDelete);
+    }
+
+    protected List<Book> filterBooksByTitle(List<Book> bookList, String bookTitle) {
+        List<Book> filteredBookList = new ArrayList<>();
+        for (Book book : bookList) {
+            if (bookHasTitle(book, bookTitle)) {
+                filteredBookList.add(book);
+            }
+        }
+        return filteredBookList;
+    }
+
+    private boolean bookHasTitle(Book book, String bookTitle) {
+        BookDetails bookDetails = book.getBookDetails();
+        return bookDetails.getTitle().equalsIgnoreCase(bookTitle);
     }
 }

@@ -12,8 +12,13 @@ public class SimulationService {
     private final BookStoreService bookStoreService = new BookStoreService();
     private final BookGeneratorService bookGeneratorService = new BookGeneratorService();
 
+    private static int BOOK_STORE_ID_1;
+    private static int BOOK_STORE_ID_2;
+
     public void runSimulation() {
-        runBookStoreDataSetupSimulation();
+        runBookStoreCreationSimulation();
+        runBookStoreAddBooksSimulation();
+
         runFilterBooksSimulation();
         runUpdateRemoveBookSimulation();
         runOrderBooksByPriceSimulation();
@@ -25,19 +30,27 @@ public class SimulationService {
         runBooksSortedByPriceSimulation();
     }
 
-    private void runBookStoreDataSetupSimulation() {
+    private void runBookStoreCreationSimulation() {
         BookStore bookStore_1 = bookStoreService.addNewBookStore("BookStore_1");
         BookStore bookStore_2 = bookStoreService.addNewBookStore("BookStore_2");
+        BOOK_STORE_ID_1 = bookStore_1.getId();
+        BOOK_STORE_ID_2 = bookStore_2.getId();
+    }
+
+    private void runBookStoreAddBooksSimulation() {
         List<Book> bookList = bookGeneratorService.generateBooks();
-        bookStoreService.addBooksToBookStoreById(bookStore_1.getId(), bookList);
-        bookStoreService.addBooksToBookStoreById(bookStore_2.getId(), bookList);
+        bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_1, bookList);
+        bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_2, bookList);
     }
 
     private void runFilterBooksSimulation() {
-        List<Book> filteredBookList = bookStoreService.getBooksFromBookStoreByTitle("Book1");
+        List<Book> bookListByTitle_1 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_1, "Book1");
+        List<Book> bookListByTitle_2 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_2, "Book2");
+
+        /*List<Book> filteredBookList = bookStoreService.getBooksFromBookStoreByTitle("Book1");
         List<Book> topRatedBookList = bookStoreService.getTopRatedBooksFromBookStore(1);
         bookService.logBookInfo(filteredBookList);
-        bookService.logBookInfo(topRatedBookList);
+        bookService.logBookInfo(topRatedBookList);*/
     }
 
     private void runUpdateRemoveBookSimulation() {

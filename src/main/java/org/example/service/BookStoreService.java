@@ -8,6 +8,7 @@ import org.example.repository.BookStoreRepository;
 import java.util.*;
 
 public class BookStoreService {
+    private final BookService bookService = new BookService();
     private final BookStoreRepository bookStoreRepository = new BookStoreRepository();
 
     public List<Book> getAllBooksFromBookStoreByBookStoreId(int bookStoreId) {
@@ -24,30 +25,11 @@ public class BookStoreService {
         bookStore.getBookList().addAll(bookList);
     }
 
-    public List<Book> getBooksFromBookStoreByTitle(String bookTitleToFind) {
-        LoggingService.logInfo(String.format("Looking for books by title: %s.", bookTitleToFind), this.getClass());
-        List<Book> bookList = getBookListFromBookStore();
-        if (bookList.isEmpty()) {
-            LoggingService.logInfo(String.format("No books found with title: %s.", bookTitleToFind), this.getClass());
-        }
-        return filterBooksByTitle(bookList, bookTitleToFind);
-    }
-
     private List<Book> getBookListFromBookStore() {
         BookStore bookStore = bookStoreRepository.getBookStore();
         return bookStore.getBookList();
     }
 
-    private List<Book> filterBooksByTitle(List<Book> unfilteredBookList, String bookTitleToFind) {
-        List<Book> filteredBookList = new LinkedList<>();
-        for (Book book : unfilteredBookList) {
-            if (book.getTitle().equalsIgnoreCase(bookTitleToFind)) {
-                LoggingService.logInfo(String.format("Book found with title: %s.", bookTitleToFind), this.getClass());
-                filteredBookList.add(book);
-            }
-        }
-        return filteredBookList;
-    }
 
     public List<Book> getTopRatedBooksFromBookStore(int amountOfBooks) {
         List<Book> sortedBookList = sortBooksByRatingDesc();
@@ -184,5 +166,10 @@ public class BookStoreService {
             }
         }
         throw new BookStoreException(String.format("Could not find bookstore with ID: %d.", bookStoreId));
+    }
+
+    public List<Book> getAllBooksFromBookStoreByTitle(int bookStoreId, String bookTitle) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        return bookService.filterBooksByTitle(bookStore.getBookList(), bookTitle);
     }
 }
