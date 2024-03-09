@@ -111,4 +111,9 @@ public class BookService {
         }
         return totalPrice;
     }
+
+    public double getAveragePriceFromBooks(List<Book> bookList) {
+        double totalBookPrice = getTotalPriceFromBooks(bookList);
+        return totalBookPrice / bookList.size();
+    }
 }

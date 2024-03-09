@@ -57,4 +57,9 @@ public class BookStoreService {
         List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
         return bookService.getTotalPriceFromBooks(bookList);
     }
+
+    public double getAverageBookPriceFromBookStore(int bookStoreId) {
+        List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        return bookService.getAveragePriceFromBooks(bookList);
+    }
 }
