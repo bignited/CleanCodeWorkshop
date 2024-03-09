@@ -89,4 +89,17 @@ public class BookService {
         BookDetails bookDetails = book.getBookDetails();
         return bookDetails.getAuthor().equalsIgnoreCase(bookAuthor);
     }
+
+    public List<Book> getAllBooksOrderedByPrice() {
+        List<Book> bookList = bookRepository.getBookList();
+        return orderBooksByPriceDesc(bookList);
+    }
+
+    private List<Book> orderBooksByPriceDesc(List<Book> bookList) {
+        bookList.sort(Comparator.comparingDouble(book -> {
+            BookDetails bookDetails = ((Book) book).getBookDetails();
+            return bookDetails.getPrice();
+        }).reversed());
+        return bookList;
+    }
 }

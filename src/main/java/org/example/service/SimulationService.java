@@ -22,8 +22,8 @@ public class SimulationService {
         runTopRatedBooksSimulation();
         runUpdateBookSimulation();
         runRemoveBookSimulation();
-
         runOrderBooksByPriceSimulation();
+
         runGetTotalBooksFromStoreSimulation();
         runBookListCalculationsSimulation();
         runSellBookSimulation();
@@ -92,8 +92,8 @@ public class SimulationService {
     }
 
     private void runOrderBooksByPriceSimulation() {
-        List<Book> orderedByPriceBookList = bookStoreService.sortBooksFromBookStoreByPrice();
-        bookService.logBookInfo(orderedByPriceBookList);
+        List<Book> bookListOrderedByPrice = bookService.getAllBooksOrderedByPrice();
+        bookService.logBookInfo(bookListOrderedByPrice);
     }
 
     private void runGetTotalBooksFromStoreSimulation() {
