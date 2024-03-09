@@ -2,10 +2,10 @@ package org.example.service;
 
 import org.example.exception.BookStoreException;
 import org.example.model.Book;
-import org.example.model.BookDetails;
 import org.example.model.BookStore;
 import org.example.repository.BookStoreRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class BookStoreService {
@@ -61,5 +61,25 @@ public class BookStoreService {
     public double getAverageBookPriceFromBookStore(int bookStoreId) {
         List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
         return bookService.getAveragePriceFromBooks(bookList);
+    }
+
+    public void sellBooksByTitleAndAuthorNameFromBookStore(int bookStoreId, HashMap<String, String> bookTitleAuthorMap) {
+        List<Book> bookListToSell = bookService.getAllBooksByTitleAndAuthorMap(bookTitleAuthorMap);
+        List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        sellBooksFromBookStore(bookStoreId, bookListToSell);
+        bookList.removeAll(bookListToSell);
+    }
+
+    private void sellBooksFromBookStore(int bookStoreId, List<Book> bookListToSell) {
+        bookService.sellBookList(bookListToSell);
+        double totalPriceOfSoldBooks = bookService.getTotalPriceFromBooks(bookListToSell);
+        increaseTotalRevenueFromBookStore(bookStoreId, totalPriceOfSoldBooks);
+    }
+
+    private void increaseTotalRevenueFromBookStore(int bookStoreId, double amount) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        double currentTotalRevenue = bookStore.getTotalRevenue();
+        double newTotalRevenue = currentTotalRevenue + amount;
+        bookStore.setTotalRevenue(newTotalRevenue);
     }
 }

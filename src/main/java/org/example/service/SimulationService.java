@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.Book;
+import org.example.model.BookDetails;
 import org.example.model.BookStore;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
@@ -25,8 +26,8 @@ public class SimulationService {
         runOrderBooksByPriceSimulation();
         runGetTotalBooksFromStoreSimulation();
         runGetAverageBookPriceFromBookStoreSimulation();
-
         runSellBookSimulation();
+
         runTotalRevenueAndTotalSoldSimulation();
         runBooksByRatingRangeSimulation();
         runBooksSortedByPriceSimulation();
@@ -118,9 +119,19 @@ public class SimulationService {
     }
 
     private void runSellBookSimulation() {
+        sellBookSimulation(BOOK_STORE_ID_1, "Book3");
+        sellBookSimulation(BOOK_STORE_ID_1, "Book4");
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
+    }
+
+    private void sellBookSimulation(int bookStoreId, String titleBookToSell) {
+        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByTitle(bookStoreId, titleBookToSell);
+        Book bookToSell = bookList.get(0);
+        BookDetails bookDetails = bookToSell.getBookDetails();
         HashMap<String, String> bookTitleAuthorMap = new HashMap<>();
-        bookTitleAuthorMap.put("Book2", "Author2");
-        bookStoreService.sellBooksByTitleAndAuthorName(bookTitleAuthorMap);
+        bookTitleAuthorMap.put(bookDetails.getTitle(), bookDetails.getAuthor());
+        bookStoreService.sellBooksByTitleAndAuthorNameFromBookStore(bookStoreId, bookTitleAuthorMap);
     }
 
     private void runTotalRevenueAndTotalSoldSimulation() {

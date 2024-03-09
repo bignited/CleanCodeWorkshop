@@ -6,9 +6,7 @@ import org.example.model.BookDetails;
 import org.example.repository.BookRepository;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class BookService {
     private final BookRepository bookRepository = new BookRepository();
@@ -115,5 +113,27 @@ public class BookService {
     public double getAveragePriceFromBooks(List<Book> bookList) {
         double totalBookPrice = getTotalPriceFromBooks(bookList);
         return totalBookPrice / bookList.size();
+    }
+
+    public void sellBookList(List<Book> bookList) {
+        for (Book book : bookList) {
+            increaseSoldCopiesFromBook(book, 1);
+        }
+    }
+
+    private void increaseSoldCopiesFromBook(Book book, int amount) {
+        int currentSoldCopies = book.getNumberOfCopiesSold();
+        int newAmountCurrentSoldCopies = currentSoldCopies + amount;
+        book.setNumberOfCopiesSold(newAmountCurrentSoldCopies);
+    }
+
+    public List<Book> getAllBooksByTitleAndAuthorMap(HashMap<String, String> bookTitleAuthorMap) {
+        List<Book> filteredBookList = new ArrayList<>();
+        for (Map.Entry<String, String> titleAuthorEntry : bookTitleAuthorMap.entrySet()) {
+            String titleBook = titleAuthorEntry.getKey();
+            String authorBook = titleAuthorEntry.getValue();
+            filteredBookList.addAll(filterBooksByTitleAndAuthor(titleBook, authorBook));
+        }
+        return filteredBookList;
     }
 }
