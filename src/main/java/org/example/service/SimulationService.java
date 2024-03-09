@@ -18,8 +18,9 @@ public class SimulationService {
     public void runSimulation() {
         runBookStoreCreationSimulation();
         runBookStoreAddBooksSimulation();
+        runFilterBooksByTitleSimulation();
 
-        runFilterBooksSimulation();
+        runTopRatedBooksSimulation();
         runUpdateRemoveBookSimulation();
         runOrderBooksByPriceSimulation();
         runGetTotalBooksFromStoreSimulation();
@@ -43,16 +44,19 @@ public class SimulationService {
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_2, bookList);
     }
 
-    private void runFilterBooksSimulation() {
+    private void runFilterBooksByTitleSimulation() {
         List<Book> bookListByTitle_1 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_1, "Book1");
         List<Book> bookListByTitle_2 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_2, "Book2");
         bookService.logBookInfo(bookListByTitle_1);
         bookService.logBookInfo(bookListByTitle_2);
+    }
 
-        /*List<Book> filteredBookList = bookStoreService.getBooksFromBookStoreByTitle("Book1");
-        List<Book> topRatedBookList = bookStoreService.getTopRatedBooksFromBookStore(1);
-        bookService.logBookInfo(filteredBookList);
-        bookService.logBookInfo(topRatedBookList);*/
+    private void runTopRatedBooksSimulation() {
+        int amountOfTopRatedBooks = 3;
+        List<Book> topRatedBookList_1 = bookStoreService.getTopRatedBooksFromBookStore(BOOK_STORE_ID_1, amountOfTopRatedBooks);
+        List<Book> topRatedBookList_2 = bookStoreService.getTopRatedBooksFromBookStore(BOOK_STORE_ID_2, amountOfTopRatedBooks);
+        bookService.logBookInfo(topRatedBookList_1);
+        bookService.logBookInfo(topRatedBookList_2);
     }
 
     private void runUpdateRemoveBookSimulation() {

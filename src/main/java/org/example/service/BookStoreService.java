@@ -11,35 +11,15 @@ public class BookStoreService {
     private final BookService bookService = new BookService();
     private final BookStoreRepository bookStoreRepository = new BookStoreRepository();
 
-    public List<Book> getAllBooksFromBookStoreByBookStoreId(int bookStoreId) {
-        BookStore bookStore = bookStoreRepository.getBookStoreById(bookStoreId);
-        return bookStore.getBookList();
-    }
-
-    public void removeBookFromBookStoreByTitleAndAuthor(String titleBook, String authorBook) {
-        List<Book> bookList = getAll
-    }
-
-    public void addBooks(List<Book> bookList) {
-        BookStore bookStore = bookStoreRepository.getBookStore();
-        bookStore.getBookList().addAll(bookList);
-    }
-
     private List<Book> getBookListFromBookStore() {
-        BookStore bookStore = bookStoreRepository.getBookStore();
+        BookStore bookStore = bookStoreRepository. ();
         return bookStore.getBookList();
     }
 
 
-    public List<Book> getTopRatedBooksFromBookStore(int amountOfBooks) {
-        List<Book> sortedBookList = sortBooksByRatingDesc();
-        return sortedBookList.subList(0, amountOfBooks);
-    }
-
-    private List<Book> sortBooksByRatingDesc() {
-        List<Book> bookList = new ArrayList<>(getBookListFromBookStore());
-        bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
-        return bookList;
+    public List<Book> getTopRatedBooksFromBookStore(int bookStoreId, int amountOfTopRatedBooks) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        return bookService.getTopRatedBooksFromBookList(bookStore.getBookList(), amountOfTopRatedBooks);
     }
 
     public List<Book> sortBooksFromBookStoreByPrice() {

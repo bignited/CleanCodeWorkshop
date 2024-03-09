@@ -7,6 +7,7 @@ import org.example.repository.BookRepository;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class BookService {
@@ -65,5 +66,15 @@ public class BookService {
     private boolean bookHasTitle(Book book, String bookTitle) {
         BookDetails bookDetails = book.getBookDetails();
         return bookDetails.getTitle().equalsIgnoreCase(bookTitle);
+    }
+
+    public List<Book> getTopRatedBooksFromBookList(List<Book> bookList, int amountOfBooks) {
+        List<Book> orderedBooks = orderBooksByRatingDesc(bookList);
+        return orderedBooks.subList(0, amountOfBooks);
+    }
+
+    private List<Book> orderBooksByRatingDesc(List<Book> bookList) {
+        bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
+        return bookList;
     }
 }
