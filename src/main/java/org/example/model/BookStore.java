@@ -4,36 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookStore {
+    private static int idCounter = 0;
     private int id;
-    private final List<Book> bookList;
     private int totalBooksSold;
     private double totalRevenue;
+    private final List<Book> bookList;
+
+    public BookStore() {
+        this.id = idCounter;
+        idCounter++;
+        this.bookList = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
     }
 
-    public BookStore() {
-        this.bookList = new ArrayList<>();
+    public List<Book> getBookList() {
+        return bookList;
     }
 
     public int getTotalBooksSold() {
         return totalBooksSold;
     }
 
-    public void setTotalBooksSold(int totalBooksSold) {
-        this.totalBooksSold = totalBooksSold;
-    }
-
     public double getTotalRevenue() {
         return totalRevenue;
     }
 
-    public void setTotalRevenue(double totalRevenue) {
-        this.totalRevenue = totalRevenue;
+    public void setTotalBooksSold(int totalBooksSold) {
+        this.totalBooksSold = totalBooksSold;
     }
 
-    public List<Book> getBookList() {
-        return bookList;
+    public void setTotalRevenue(double totalRevenue) {
+        this.totalRevenue = totalRevenue;
     }
 }

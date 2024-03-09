@@ -1,46 +1,25 @@
 package org.example.model;
 
-import org.example.service.LoggingService;
-
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Book {
+    private static int idCounter = 0;
     private int id;
-    private String title;
-    private String author;
-    private double price;
     private double rating;
     private int numberOfCopiesSold;
+    private final BookDetails bookDetails;
+    private final List<Review> reviewList;
 
     public Book(String title, String author, double price) {
-        this.title = title;
-        this.author = author;
-        this.price = price;
+        this.id = idCounter;
+        idCounter++;
+        this.bookDetails = new BookDetails(title, author, price);
+        this.reviewList = new ArrayList<>();
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public double getRating() {
@@ -51,25 +30,19 @@ public class Book {
         return numberOfCopiesSold;
     }
 
+    public BookDetails getBookDetails() {
+        return bookDetails;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
     public void setNumberOfCopiesSold(int numberOfCopiesSold) {
         this.numberOfCopiesSold = numberOfCopiesSold;
-    }
-
-    public void logBookInfo() {
-        String bookInfo = String.format("Title: %s, Author: %s, Price: %.2f, Rating: %.2f",
-                title, author, price, rating);
-        LoggingService.logInfo(bookInfo, this.getClass());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book book)) return false;
-        return Objects.equals(title, book.title) && Objects.equals(author, book.author);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, author);
     }
 }
