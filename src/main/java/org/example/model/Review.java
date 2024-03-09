@@ -2,7 +2,7 @@ package org.example.model;
 
 public class Review {
     private static int idCounter = 0;
-    private int id;
+    private final int id;
     private String description;
     private double rating;
 

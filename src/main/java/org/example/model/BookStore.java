@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BookStore {
     private static int idCounter = 0;
-    private int id;
+    private final int id;
     private final String name;
     private int totalBooksSold;
     private double totalRevenue;
