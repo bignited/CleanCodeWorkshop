@@ -93,7 +93,7 @@ public class BookService {
         return orderBooksByPriceDesc(bookList);
     }
 
-    private List<Book> orderBooksByPriceDesc(List<Book> bookList) {
+    public List<Book> orderBooksByPriceDesc(List<Book> bookList) {
         bookList.sort(Comparator.comparingDouble(book -> {
             BookDetails bookDetails = ((Book) book).getBookDetails();
             return bookDetails.getPrice();

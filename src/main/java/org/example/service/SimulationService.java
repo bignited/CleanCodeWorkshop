@@ -158,8 +158,10 @@ public class SimulationService {
     }
 
     private void runBooksSortedByPriceSimulation() {
-        List<Book> booksSortedByPrice = bookStoreService.getBooksSortedByPrice();
-        bookService.logBookInfo(booksSortedByPrice);
+        List<Book> booksSortedByPrice_1 = bookStoreService.getAllBooksFromBookStoreOrderByPriceDesc(BOOK_STORE_ID_1);
+        List<Book> booksSortedByPrice_2 = bookStoreService.getAllBooksFromBookStoreOrderByPriceDesc(BOOK_STORE_ID_2);
+        bookService.logBookInfo(booksSortedByPrice_1);
+        bookService.logBookInfo(booksSortedByPrice_2);
     }
 
     private void logInfoOfBookStoreBookList(int bookStoreId) {

@@ -105,4 +105,9 @@ public class BookStoreService {
         List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
         return bookService.filterBookListByRatingRange(bookList, minRatingRange, maxRatingRange);
     }
+
+    public List<Book> getAllBooksFromBookStoreOrderByPriceDesc(int bookStoreId) {
+        List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        return bookService.orderBooksByPriceDesc(bookList);
+    }
 }
