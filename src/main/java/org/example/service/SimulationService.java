@@ -25,7 +25,7 @@ public class SimulationService {
         runOrderBooksByPriceSimulation();
         runGetTotalBooksFromStoreSimulation();
 
-        runBookListCalculationsSimulation();
+        runGetTotalBookPriceFromBookStoreSimulation();
         runSellBookSimulation();
         runTotalRevenueAndTotalSoldSimulation();
         runBooksByRatingRangeSimulation();
@@ -103,11 +103,16 @@ public class SimulationService {
         LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore_2), this.getClass());
     }
 
-    private void runBookListCalculationsSimulation() {
-        double totalPriceOfBooksInBookStore = bookStoreService.calculateTotalBookPrice();
-        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooksInBookStore), this.getClass());
-        double averageBookPriceInBookStore = bookStoreService.calculateAverageBookPriceInBookStore();
-        LoggingService.logInfo(String.format("Average price of books: %f.2", averageBookPriceInBookStore), this.getClass());
+    private void runGetTotalBookPriceFromBookStoreSimulation() {
+        double totalPriceOfBooksInBookStore_1 = bookStoreService.getTotalPriceOfAllBooksFromBookStore(BOOK_STORE_ID_1);
+        double totalPriceOfBooksInBookStore_2 = bookStoreService.getTotalPriceOfAllBooksFromBookStore(BOOK_STORE_ID_2);
+        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooksInBookStore_1), this.getClass());
+        LoggingService.logInfo(String.format("Total price of all books: %f.2", totalPriceOfBooksInBookStore_2), this.getClass());
+    }
+
+    private void runGetAverageBookPriceFromBookStoreSimulation() {
+    /*double averageBookPriceInBookStore = bookStoreService.calculateAverageBookPriceInBookStore();
+        LoggingService.logInfo(String.format("Average price of books: %f.2", averageBookPriceInBookStore), this.getClass());*/
     }
 
     private void runSellBookSimulation() {

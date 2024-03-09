@@ -102,4 +102,13 @@ public class BookService {
         }).reversed());
         return bookList;
     }
+
+    public double getTotalPriceFromBooks(List<Book> bookList) {
+        double totalPrice = 0;
+        for (Book book : bookList) {
+            BookDetails bookDetails = book.getBookDetails();
+            totalPrice += bookDetails.getPrice();
+        }
+        return totalPrice;
+    }
 }

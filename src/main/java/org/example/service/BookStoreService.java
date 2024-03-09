@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.exception.BookStoreException;
 import org.example.model.Book;
+import org.example.model.BookDetails;
 import org.example.model.BookStore;
 import org.example.repository.BookStoreRepository;
 
@@ -50,5 +51,10 @@ public class BookStoreService {
     public int getTotalAmountOfBooksFromBookStore(int bookStoreId) {
         List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
         return bookList.size();
+    }
+
+    public double getTotalPriceOfAllBooksFromBookStore(int bookStoreId) {
+        List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        return bookService.getTotalPriceFromBooks(bookList);
     }
 }
