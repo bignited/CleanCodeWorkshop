@@ -1,4 +1,5 @@
 - generateBooks():List<Book> [BookGeneratorService]
+
 - logBookInfo(List<Book> bookList):void [BookService]
 - updateBookDetails(String titleOfBookToUpdate, UpdateBookDetailsValueObject updateBookDetailsValueObject):void [BookDetailsService]
 - getBookByTitle(String titleToFind):Book [BookDetailsService]

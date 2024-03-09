@@ -164,4 +164,25 @@ public class BookStoreService {
         bookList.sort(Comparator.comparingDouble(Book::getPrice).reversed());
         return bookList;
     }
+
+    public BookStore addNewBookStore(String bookStoreName) {
+        BookStore bookStore = new BookStore(bookStoreName);
+        bookStoreRepository.getBookStoreList().add(bookStore);
+        return bookStore;
+    }
+
+    public void addBooksToBookStoreById(int bookStoreId, List<Book> bookList) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        bookStore.getBookList().addAll(bookList);
+    }
+
+    private BookStore getBookStoreById(int bookStoreId) {
+        List<BookStore> bookStoreList = bookStoreRepository.getBookStoreList();
+        for (BookStore bookStore : bookStoreList) {
+            if (bookStore.getId() == bookStoreId) {
+                return bookStore;
+            }
+        }
+        throw new BookStoreException(String.format("Could not find bookstore with ID: %d.", bookStoreId));
+    }
 }

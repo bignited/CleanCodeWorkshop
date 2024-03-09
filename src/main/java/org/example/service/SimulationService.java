@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.Book;
+import org.example.model.BookStore;
 import org.example.valueobject.UpdateBookDetailsValueObject;
 
 import java.util.HashMap;
@@ -25,8 +26,11 @@ public class SimulationService {
     }
 
     private void runBookStoreDataSetupSimulation() {
+        BookStore bookStore_1 = bookStoreService.addNewBookStore("BookStore_1");
+        BookStore bookStore_2 = bookStoreService.addNewBookStore("BookStore_2");
         List<Book> bookList = bookGeneratorService.generateBooks();
-        bookStoreService.addBooks(bookList);
+        bookStoreService.addBooksToBookStoreById(bookStore_1.getId(), bookList);
+        bookStoreService.addBooksToBookStoreById(bookStore_2.getId(), bookList);
     }
 
     private void runFilterBooksSimulation() {
