@@ -31,7 +31,6 @@ public class SimulationService {
         runTotalRevenueSimulation();
         runTotalBooksSoldSimulation();
         runBooksByRatingRangeSimulation();
-
         runBooksSortedByPriceSimulation();
     }
 
@@ -46,6 +45,7 @@ public class SimulationService {
         List<Book> bookList = bookGeneratorService.generateBooks();
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_1, bookList);
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_2, bookList);
+        bookService.addNewBooks(bookList);
         logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
         logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
     }
@@ -66,17 +66,17 @@ public class SimulationService {
     }
 
     private void runUpdateBookSimulation() {
-        updateBookSimulation(BOOK_STORE_ID_1, "NewBookTitle_1");
-        updateBookSimulation(BOOK_STORE_ID_2, "NewBookTitle_2");
+        updateBookSimulation(BOOK_STORE_ID_1, "Book2", "NewBookTitle_1");
+        updateBookSimulation(BOOK_STORE_ID_2, "Book3", "NewBookTitle_2");
         logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
         logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
     }
 
-    private void updateBookSimulation(int bookStoreId, String newBookTitle) {
-        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByTitle(bookStoreId, newBookTitle);
+    private void updateBookSimulation(int bookStoreId, String titleBookToUpdate, String titleNewBook) {
+        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByTitle(bookStoreId, titleBookToUpdate);
         Book bookToUpdate = bookList.get(0);
         UpdateBookDetailsValueObject updateBookDetailsValueObject = new UpdateBookDetailsValueObject(
-                newBookTitle, bookToUpdate.getBookDetails().getAuthor(), bookToUpdate.getBookDetails().getPrice());
+                titleNewBook, bookToUpdate.getBookDetails().getAuthor(), bookToUpdate.getBookDetails().getPrice());
         bookService.updateBookDetailsByBookId(bookToUpdate.getId(), updateBookDetailsValueObject);
     }
 
@@ -121,8 +121,8 @@ public class SimulationService {
     }
 
     private void runSellBookSimulation() {
-        sellBookSimulation(BOOK_STORE_ID_1, "Book3");
         sellBookSimulation(BOOK_STORE_ID_1, "Book4");
+        sellBookSimulation(BOOK_STORE_ID_1, "Book5");
         logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
         logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
     }

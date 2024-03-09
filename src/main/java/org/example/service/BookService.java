@@ -150,4 +150,9 @@ public class BookService {
     private boolean bookInRatingRange(double rating, int minRatingRange, int maxRatingRange) {
         return rating >= minRatingRange && rating <= maxRatingRange;
     }
+
+    public void addNewBooks(List<Book> bookListToAdd) {
+        List<Book> bookList = bookRepository.getBookList();
+        bookList.addAll(bookListToAdd);
+    }
 }
