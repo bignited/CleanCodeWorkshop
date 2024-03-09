@@ -13,6 +13,16 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository = new BookRepository();
 
+    public Book getBookById(int bookId) {
+        List<Book> bookList = bookRepository.getBookList();
+        for (Book book : bookList) {
+            if (book.getId() == bookId) {
+                return book;
+            }
+        }
+        throw new BookException(String.format("Book with ID: %d cannot be found.", bookId));
+    }
+
     public void logBookInfo(List<Book> bookList) {
         for (Book book : bookList) {
             logBookInfo(book);
@@ -76,5 +86,34 @@ public class BookService {
     private List<Book> orderBooksByRatingDesc(List<Book> bookList) {
         bookList.sort(Comparator.comparingDouble(Book::getRating).reversed());
         return bookList;
+    }
+
+    public void updateBookDetailsByBookId(int bookId, UpdateBookDetailsValueObject updateBookDetailsValueObject) {
+        Book bookToUpdate = getBookById(bookId);
+        bookToUpdate.getBookDetails().setTitle(updateBookDetailsValueObject.title());
+        bookToUpdate.getBookDetails().setAuthor(updateBookDetailsValueObject.author());
+        bookToUpdate.getBookDetails().setPrice(updateBookDetailsValueObject.price());
+    }
+
+    public void removeBookByTitleAndAuthor(String titleBookToRemove, String authorBookToRemove) {
+        List<Book> bookList = bookRepository.getBookList();
+        List<Book> filteredBookList = filterBooksByTitleAndAuthor(titleBookToRemove, authorBookToRemove);
+        bookList.removeAll(filteredBookList);
+    }
+
+    private List<Book> filterBooksByTitleAndAuthor(String titleBookToRemove, String authorBookToRemove) {
+        List<Book> bookList = bookRepository.getBookList();
+        List<Book> filteredBookList = new ArrayList<>();
+        for (Book book : bookList) {
+            if (bookHasTitle(book, titleBookToRemove) && bookHasAuthor(book, authorBookToRemove)) {
+                filteredBookList.add(book);
+            }
+        }
+        return filteredBookList;
+    }
+
+    private boolean bookHasAuthor(Book book, String bookAuthor) {
+        BookDetails bookDetails = book.getBookDetails();
+        return bookDetails.getAuthor().equalsIgnoreCase(bookAuthor);
     }
 }

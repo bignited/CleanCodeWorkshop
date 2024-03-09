@@ -19,9 +19,10 @@ public class SimulationService {
         runBookStoreCreationSimulation();
         runBookStoreAddBooksSimulation();
         runFilterBooksByTitleSimulation();
-
         runTopRatedBooksSimulation();
-        runUpdateRemoveBookSimulation();
+        runUpdateBookSimulation();
+        runRemoveBookSimulation();
+
         runOrderBooksByPriceSimulation();
         runGetTotalBooksFromStoreSimulation();
         runBookListCalculationsSimulation();
@@ -42,6 +43,8 @@ public class SimulationService {
         List<Book> bookList = bookGeneratorService.generateBooks();
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_1, bookList);
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_2, bookList);
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
     }
 
     private void runFilterBooksByTitleSimulation() {
@@ -59,11 +62,33 @@ public class SimulationService {
         bookService.logBookInfo(topRatedBookList_2);
     }
 
-    private void runUpdateRemoveBookSimulation() {
+    private void runUpdateBookSimulation() {
+        updateBookSimulation(BOOK_STORE_ID_1, "NewBookTitle_1");
+        updateBookSimulation(BOOK_STORE_ID_2, "NewBookTitle_2");
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
+    }
+
+    private void updateBookSimulation(int bookStoreId, String newBookTitle) {
+        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByTitle(bookStoreId, newBookTitle);
+        Book bookToUpdate = bookList.get(0);
         UpdateBookDetailsValueObject updateBookDetailsValueObject = new UpdateBookDetailsValueObject(
-                "NewBook1", "NewAuthor1", 11.99);
-        bookService.updateBookDetails("Book1", updateBookDetailsValueObject);
-        bookService.removeBookByTitle("Book1");
+                newBookTitle, bookToUpdate.getBookDetails().getAuthor(), bookToUpdate.getBookDetails().getPrice());
+        bookService.updateBookDetailsByBookId(bookToUpdate.getId(), updateBookDetailsValueObject);
+    }
+
+    private void runRemoveBookSimulation() {
+        removeBookSimulation(BOOK_STORE_ID_1, "NewBookTitle_1");
+        removeBookSimulation(BOOK_STORE_ID_2, "NewBookTitle_2");
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_1);
+        logInfoOfBookStoreBookList(BOOK_STORE_ID_2);
+    }
+
+    private void removeBookSimulation(int bookStoreId, String titleBookToRemove) {
+        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByTitle(bookStoreId, titleBookToRemove);
+        Book bookToRemove = bookList.get(0);
+        String authorBookToRemove = bookToRemove.getBookDetails().getAuthor();
+        bookService.removeBookByTitleAndAuthor(titleBookToRemove, authorBookToRemove);
     }
 
     private void runOrderBooksByPriceSimulation() {
@@ -105,5 +130,10 @@ public class SimulationService {
     private void runBooksSortedByPriceSimulation() {
         List<Book> booksSortedByPrice = bookStoreService.getBooksSortedByPrice();
         bookService.logBookInfo(booksSortedByPrice);
+    }
+
+    private void logInfoOfBookStoreBookList(int bookStoreId) {
+        List<Book> bookList = bookStoreService.getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        bookService.logBookInfo(bookList);
     }
 }
