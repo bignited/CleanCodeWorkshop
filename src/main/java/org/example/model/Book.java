@@ -5,6 +5,7 @@ import org.example.service.LoggingService;
 import java.util.Objects;
 
 public class Book {
+    private int id;
     private String title;
     private String author;
     private double price;
@@ -15,6 +16,10 @@ public class Book {
         this.title = title;
         this.author = author;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {

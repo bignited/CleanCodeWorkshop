@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookStore {
+    private int id;
     private final List<Book> bookList;
     private int totalBooksSold;
     private double totalRevenue;
 
+    public int getId() {
+        return id;
+    }
 
     public BookStore() {
         this.bookList = new ArrayList<>();

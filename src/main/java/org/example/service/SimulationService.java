@@ -26,7 +26,6 @@ public class SimulationService {
 
     private void runBookStoreDataSetupSimulation() {
         List<Book> bookList = bookGeneratorService.generateBooks();
-        bookStoreService.createBookStore();
         bookStoreService.addBooks(bookList);
     }
 

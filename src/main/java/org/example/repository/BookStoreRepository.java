@@ -2,14 +2,13 @@ package org.example.repository;
 
 import org.example.model.BookStore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookStoreRepository {
-    private static BookStore bookStore;
+    private static final List<BookStore> bookStoreList = new ArrayList<>();
 
-    public void createBookStore() {
-        bookStore = new BookStore();
-    }
-
-    public BookStore getBookStore() {
-        return bookStore;
+    public List<BookStore> getBookStoreList() {
+        return bookStoreList;
     }
 }

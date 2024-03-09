@@ -10,8 +10,13 @@ import java.util.*;
 public class BookStoreService {
     private final BookStoreRepository bookStoreRepository = new BookStoreRepository();
 
-    public void createBookStore() {
-        bookStoreRepository.createBookStore();
+    public List<Book> getAllBooksFromBookStoreByBookStoreId(int bookStoreId) {
+        BookStore bookStore = bookStoreRepository.getBookStoreById(bookStoreId);
+        return bookStore.getBookList();
+    }
+
+    public void removeBookFromBookStoreByTitleAndAuthor(String titleBook, String authorBook) {
+        List<Book> bookList = getAll
     }
 
     public void addBooks(List<Book> bookList) {
