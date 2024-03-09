@@ -25,10 +25,12 @@ public class SimulationService {
         runRemoveBookSimulation();
         runOrderBooksByPriceSimulation();
         runGetTotalBooksFromStoreSimulation();
+        runGetTotalBookPriceFromBookStoreSimulation();
         runGetAverageBookPriceFromBookStoreSimulation();
         runSellBookSimulation();
+        runTotalRevenueSimulation();
+        runTotalBooksSoldSimulation();
 
-        runTotalRevenueAndTotalSoldSimulation();
         runBooksByRatingRangeSimulation();
         runBooksSortedByPriceSimulation();
     }
@@ -134,12 +136,18 @@ public class SimulationService {
         bookStoreService.sellBooksByTitleAndAuthorNameFromBookStore(bookStoreId, bookTitleAuthorMap);
     }
 
-    private void runTotalRevenueAndTotalSoldSimulation() {
-        double totalBookStoreRevenue = bookStoreService.getBookStoreTotalRevenue();
-        LoggingService.logInfo(String.format("Total revenue of bookstore: %f.2", totalBookStoreRevenue), this.getClass());
-        int totalAmountOfBooksSold = bookStoreService.getTotalBooksSold();
-        LoggingService.logInfo(String.format("Total amount of books sold: %d", totalAmountOfBooksSold), this.getClass());
-        bookStoreService.logAllBookStoreBooks();
+    private void runTotalRevenueSimulation() {
+        double totalBookStoreRevenue_1 = bookStoreService.getBookStoreTotalRevenue(BOOK_STORE_ID_1);
+        double totalBookStoreRevenue_2 = bookStoreService.getBookStoreTotalRevenue(BOOK_STORE_ID_2);
+        LoggingService.logInfo(String.format("Total revenue of bookstore: %f.2", totalBookStoreRevenue_1), this.getClass());
+        LoggingService.logInfo(String.format("Total revenue of bookstore: %f.2", totalBookStoreRevenue_2), this.getClass());
+    }
+
+    private void runTotalBooksSoldSimulation() {
+        int totalAmountOfBooksSold_1 = bookStoreService.getBookStoreTotalBooksSold(BOOK_STORE_ID_1);
+        int totalAmountOfBooksSold_2 = bookStoreService.getBookStoreTotalBooksSold(BOOK_STORE_ID_2);
+        LoggingService.logInfo(String.format("Total amount of books sold: %d", totalAmountOfBooksSold_1), this.getClass());
+        LoggingService.logInfo(String.format("Total amount of books sold: %d", totalAmountOfBooksSold_2), this.getClass());
     }
 
     private void runBooksByRatingRangeSimulation() {

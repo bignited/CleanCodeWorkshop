@@ -74,6 +74,7 @@ public class BookStoreService {
         bookService.sellBookList(bookListToSell);
         double totalPriceOfSoldBooks = bookService.getTotalPriceFromBooks(bookListToSell);
         increaseTotalRevenueFromBookStore(bookStoreId, totalPriceOfSoldBooks);
+        increaseAmountOfBooksSold(bookStoreId, bookListToSell.size());
     }
 
     private void increaseTotalRevenueFromBookStore(int bookStoreId, double amount) {
@@ -81,5 +82,22 @@ public class BookStoreService {
         double currentTotalRevenue = bookStore.getTotalRevenue();
         double newTotalRevenue = currentTotalRevenue + amount;
         bookStore.setTotalRevenue(newTotalRevenue);
+    }
+
+    private void increaseAmountOfBooksSold(int bookStoreId, int size) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        int currentTotalSoldBooks = bookStore.getTotalBooksSold();
+        int newTotalSoldBooks = currentTotalSoldBooks + size;
+        bookStore.setTotalBooksSold(newTotalSoldBooks);
+    }
+
+    public double getBookStoreTotalRevenue(int bookStoreId) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        return bookStore.getTotalRevenue();
+    }
+
+    public int getBookStoreTotalBooksSold(int bookStoreId) {
+        BookStore bookStore = getBookStoreById(bookStoreId);
+        return bookStore.getTotalBooksSold();
     }
 }
