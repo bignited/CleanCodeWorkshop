@@ -14,8 +14,15 @@ public class BookService {
 
     public void logBookInfo(List<Book> bookList) {
         for (Book book : bookList) {
-            book.logBookInfo();
+            logBookInfo(book);
         }
+    }
+
+    private void logBookInfo(Book book) {
+        BookDetails bookDetails = book.getBookDetails();
+        String logMessage = String.format("Book: Title:%s - Author:%s - Rating:%f.2 - Price:%f.2",
+                bookDetails.getTitle(), bookDetails.getAuthor(), book.getRating(), bookDetails.getPrice());
+        LoggingService.logInfo(logMessage, this.getClass());
     }
 
     public void updateBookDetails(String titleOfBookToUpdate, UpdateBookDetailsValueObject updateBookDetailsValueObject) {

@@ -46,6 +46,8 @@ public class SimulationService {
     private void runFilterBooksSimulation() {
         List<Book> bookListByTitle_1 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_1, "Book1");
         List<Book> bookListByTitle_2 = bookStoreService.getAllBooksFromBookStoreByTitle(BOOK_STORE_ID_2, "Book2");
+        bookService.logBookInfo(bookListByTitle_1);
+        bookService.logBookInfo(bookListByTitle_2);
 
         /*List<Book> filteredBookList = bookStoreService.getBooksFromBookStoreByTitle("Book1");
         List<Book> topRatedBookList = bookStoreService.getTopRatedBooksFromBookStore(1);
