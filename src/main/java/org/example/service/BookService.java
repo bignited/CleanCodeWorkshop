@@ -136,4 +136,18 @@ public class BookService {
         }
         return filteredBookList;
     }
+
+    public List<Book> filterBookListByRatingRange(List<Book> bookList, int minRatingRange, int maxRatingRange) {
+        List<Book> filteredBookList = new ArrayList<>();
+        for (Book book : bookList) {
+            if (bookInRatingRange(book.getRating(), minRatingRange, maxRatingRange)) {
+                filteredBookList.add(book);
+            }
+        }
+        return filteredBookList;
+    }
+
+    private boolean bookInRatingRange(double rating, int minRatingRange, int maxRatingRange) {
+        return rating >= minRatingRange && rating <= maxRatingRange;
+    }
 }

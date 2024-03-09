@@ -30,8 +30,8 @@ public class SimulationService {
         runSellBookSimulation();
         runTotalRevenueSimulation();
         runTotalBooksSoldSimulation();
-
         runBooksByRatingRangeSimulation();
+
         runBooksSortedByPriceSimulation();
     }
 
@@ -151,8 +151,10 @@ public class SimulationService {
     }
 
     private void runBooksByRatingRangeSimulation() {
-        List<Book> booksByRatingRange = bookStoreService.getBooksByRatingRange(3, 5);
-        bookService.logBookInfo(booksByRatingRange);
+        List<Book> booksByRatingRange_1 = bookStoreService.getAllBooksFromBookStoreByRatingRange(BOOK_STORE_ID_1, 3, 5);
+        List<Book> booksByRatingRange_2 = bookStoreService.getAllBooksFromBookStoreByRatingRange(BOOK_STORE_ID_2, 1, 5);
+        bookService.logBookInfo(booksByRatingRange_1);
+        bookService.logBookInfo(booksByRatingRange_2);
     }
 
     private void runBooksSortedByPriceSimulation() {
