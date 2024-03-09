@@ -5,7 +5,7 @@ import org.example.model.Book;
 import org.example.model.BookStore;
 import org.example.repository.BookStoreRepository;
 
-import java.util.*;
+import java.util.List;
 
 public class BookStoreService {
     private final BookService bookService = new BookService();
@@ -45,5 +45,10 @@ public class BookStoreService {
     public List<Book> getTopRatedBooksFromBookStore(int bookStoreId, int amountOfTopRatedBooks) {
         BookStore bookStore = getBookStoreById(bookStoreId);
         return bookService.getTopRatedBooksFromBookList(bookStore.getBookList(), amountOfTopRatedBooks);
+    }
+
+    public int getTotalAmountOfBooksFromBookStore(int bookStoreId) {
+        List<Book> bookList = getAllBooksFromBookStoreByBookStoreId(bookStoreId);
+        return bookList.size();
     }
 }

@@ -23,8 +23,8 @@ public class SimulationService {
         runUpdateBookSimulation();
         runRemoveBookSimulation();
         runOrderBooksByPriceSimulation();
-
         runGetTotalBooksFromStoreSimulation();
+
         runBookListCalculationsSimulation();
         runSellBookSimulation();
         runTotalRevenueAndTotalSoldSimulation();
@@ -97,8 +97,10 @@ public class SimulationService {
     }
 
     private void runGetTotalBooksFromStoreSimulation() {
-        int totalBooksInBookStore = bookStoreService.getTotalBooksFromBookStore();
-        LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore), this.getClass());
+        int totalBooksInBookStore_1 = bookStoreService.getTotalAmountOfBooksFromBookStore(BOOK_STORE_ID_1);
+        int totalBooksInBookStore_2 = bookStoreService.getTotalAmountOfBooksFromBookStore(BOOK_STORE_ID_2);
+        LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore_1), this.getClass());
+        LoggingService.logInfo(String.format("Total number of books: %d", totalBooksInBookStore_2), this.getClass());
     }
 
     private void runBookListCalculationsSimulation() {
