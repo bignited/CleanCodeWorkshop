@@ -15,6 +15,7 @@ public class SimulationService {
 
     private static int BOOK_STORE_ID_1;
     private static int BOOK_STORE_ID_2;
+    private static final int AMOUNT_BOOKS = 10;
 
     public void runSimulation() {
         runBookStoreCreationSimulation();
@@ -42,7 +43,7 @@ public class SimulationService {
     }
 
     private void runBookStoreAddBooksSimulation() {
-        List<Book> bookList = bookGeneratorService.generateBooks();
+        List<Book> bookList = bookGeneratorService.generateBooks(AMOUNT_BOOKS);
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_1, bookList);
         bookStoreService.addBooksToBookStoreById(BOOK_STORE_ID_2, bookList);
         bookService.addNewBooks(bookList);

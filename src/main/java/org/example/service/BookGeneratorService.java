@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookGeneratorService {
-    private final int AMOUNT_OF_BOOKS = 10;
     private final int BASE_PRICE = 10;
 
-    public List<Book> generateBooks() {
+    public List<Book> generateBooks(int amoutOfBooks) {
         LoggingService.logInfo("Generating new books.", this.getClass());
         List<Book> bookList = new ArrayList<>();
-        for (int i = 0; i < AMOUNT_OF_BOOKS; i++) {
+        for (int i = 0; i < amoutOfBooks; i++) {
             Book newBook = new Book("Book" + i, "Author" + i, BASE_PRICE + i);
             bookList.add(newBook);
         }
