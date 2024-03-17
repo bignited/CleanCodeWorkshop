@@ -7,7 +7,7 @@ http://{{host}}:{{port}}/simulation/start
 %}
 
 ###
-http://{{host}}:{{port}}/simulation/bookstore/create
+http://{{host}}:{{port}}/simulation/createBookstores
 
 > {%
     client.test("Request executed successfully", function() {
