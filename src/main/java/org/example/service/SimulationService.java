@@ -35,7 +35,7 @@ public class SimulationService {
         runBooksSortedByPriceSimulation();
     }
 
-    private void runBookStoreCreationSimulation() {
+    public void runBookStoreCreationSimulation() {
         BookStore bookStore_1 = bookStoreService.addNewBookStore("BookStore_1");
         BookStore bookStore_2 = bookStoreService.addNewBookStore("BookStore_2");
         BOOK_STORE_ID_1 = bookStore_1.getId();

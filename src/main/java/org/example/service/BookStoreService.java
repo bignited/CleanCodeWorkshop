@@ -15,6 +15,7 @@ public class BookStoreService {
     public BookStore addNewBookStore(String bookStoreName) {
         BookStore bookStore = new BookStore(bookStoreName);
         bookStoreRepository.getBookStoreList().add(bookStore);
+        LoggingService.logInfo("New bookstore added with name: " + bookStoreName, this.getClass());
         return bookStore;
     }
 

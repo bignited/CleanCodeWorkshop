@@ -1,0 +1,18 @@
+http://{{host}}:{{port}}/simulation/start
+
+> {%
+    client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/bookstore/create
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###

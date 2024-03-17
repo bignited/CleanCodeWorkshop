@@ -15,6 +15,7 @@ public class Main {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
             server.createContext("/simulation/start", (simulationController::startSimulation));
+            server.createContext("/simulation/bookstore/create", (simulationController::runBookStoreCreationSimulation));
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {
