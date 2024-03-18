@@ -1,13 +1,139 @@
-http://{{host}}:{{port}}/simulation/start
+http://{{host}}:{{port}}/simulation/createBookstores
 
 > {%
     client.test("Request executed successfully", function() {
-    client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
     })
 %}
 
 ###
-http://{{host}}:{{port}}/simulation/createBookstores
+http://{{host}}:{{port}}/simulation/addBooksToBookstore
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getAllBooksFilteredByTitle
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getTopRatedBooks
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/updateBooks
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/removeBooks
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getAllBooksOrderedByPrice
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getTotalAmountOfBooks
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getTotalBookPrice
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getAverageBookPrice
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/sellBooks
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getTotalRevenue
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getTotalBooksSold
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/getAllBooksOrderedByRating
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/runBooksSortedByPriceSimulation
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+    })
+%}
+
+###
+http://{{host}}:{{port}}/simulation/start
 
 > {%
     client.test("Request executed successfully", function() {
