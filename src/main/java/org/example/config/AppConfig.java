@@ -37,7 +37,6 @@ public class AppConfig {
      */
     private static void setUpServer() {
         try {
-            LoggingService.logInfo("Creating HTTP server on port: " + SERVER_PORT, AppConfig.class);
             httpServer = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
         } catch (IOException e) {
             LoggingService.logInfo("Server could not be created.:" + e.getMessage(), AppConfig.class);

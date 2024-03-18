@@ -56,7 +56,6 @@ public class EndpointRegistrar {
         for (Class<?> classObject : classes) {
             API apiAnnotation = classObject.getAnnotation(API.class);
             if (apiAnnotation != null) {
-                LoggingService.logInfo("Registrating endpoints for API: " + classObject.getName(), EndpointRegistrar.class);
                 String controllerEndPointUrl = apiAnnotation.endpoint();
                 createEndPointContextsOfMethods(httpServer, classObject, controllerEndPointUrl);
             }
@@ -110,7 +109,6 @@ public class EndpointRegistrar {
                         method.getName() + " : " + e.getMessage(), AppConfig.class);
             }
         });
-        LoggingService.logInfo("Endpoint registered for: " + endPointUrl, EndpointRegistrar.class);
     }
 
     /**
