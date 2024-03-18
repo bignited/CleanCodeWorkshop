@@ -1,9 +1,11 @@
 package org.example.controller;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.example.annotation.API;
 import org.example.annotation.EndPoint;
 import org.example.service.SimulationService;
 
+@API(endpoint = "/simulation/")
 public class SimulationController implements Controller {
     private final SimulationService simulationService;
 

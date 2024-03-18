@@ -1,25 +1,28 @@
 package org.example.config;
 
 import com.sun.net.httpserver.HttpServer;
+import org.example.annotation.API;
 import org.example.annotation.EndPoint;
 import org.example.controller.SimulationController;
 import org.example.service.LoggingService;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Class for registering endpoints on an HTTP server. This class provides methods to register endpoints on an
- * HTTP server. The endpoints are registered based on the methods in the SimulationController class. The class uses
- * reflection to create endpoint contexts for the methods in the SimulationController class. The endpoint contexts
- * are created based on the method names. If a method has an EndPoint annotation, the value of the annotation is
- * used as the endpoint URL. Otherwise, the endpoint URL is created based on the method name. The class also checks
- * if the method is public before creating the endpoint context.
- * If the method is not public, the endpoint context is not created.
+ * Class for registering endpoints on an HTTP server.
+ * This class provides methods to register endpoints on an HTTP server.
+ * Endpoints are registered based on the methods annotated with {@link EndPoint} in classes annotated with {@link API}.
+ * The class uses reflection to create endpoint contexts for the annotated methods.
+ * Endpoint URLs are determined based on the method names, with the option to override them using the {@link EndPoint} annotation.
+ * Endpoint contexts are created only for public methods.
  */
 public class EndpointRegistrar {
-    private static final String PATH_SIM = "/simulation/";
 
     /**
      * Registers endpoints on the provided HTTP server.
@@ -27,19 +30,51 @@ public class EndpointRegistrar {
      * @param httpServer The HTTP server to register endpoints on.
      */
     public static void registerEndpoints(HttpServer httpServer) {
-        setSimulationControllerEndpointContexts(httpServer);
+        Set<Class<?>> classes = scanAllClasses();
+        createEndPointContextsPerClass(classes, httpServer);
     }
 
     /**
-     * Sets endpoint contexts for methods in the SimulationController class.
+     * Scans all classes in the package and sub-packages to find those annotated with {@link API}.
+     * For each class found, creates endpoint contexts for the methods annotated with {@link EndPoint}.
      *
+     * @return Set of classes annotated with {@link API}.
+     */
+    private static Set<Class<?>> scanAllClasses() {
+        String packageName = "org.example";
+        Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
+        return new HashSet<>(reflections.getSubTypesOf(Object.class));
+    }
+
+    /**
+     * Creates endpoint contexts for the methods in the provided classes.
+     *
+     * @param classes    Set of classes to scan for endpoint methods.
      * @param httpServer The HTTP server to set endpoint contexts on.
      */
-    private static void setSimulationControllerEndpointContexts(HttpServer httpServer) {
-        Method[] controllerMethods = SimulationController.class.getDeclaredMethods();
+    private static void createEndPointContextsPerClass(Set<Class<?>> classes, HttpServer httpServer) {
+        for (Class<?> classObject : classes) {
+            API apiAnnotation = classObject.getAnnotation(API.class);
+            if (apiAnnotation != null) {
+                String controllerEndPointUrl = apiAnnotation.endpoint();
+                createEndPointContextsOfMethods(httpServer, classObject, controllerEndPointUrl);
+            }
+        }
+    }
+
+    /**
+     * Creates endpoint contexts for the methods in the provided class.
+     *
+     * @param classObject           The class to scan for endpoint methods.
+     * @param httpServer            The HTTP server to set endpoint contexts on.
+     * @param controllerEndPointUrl The base endpoint URL for the controller class.
+     */
+    private static void createEndPointContextsOfMethods(HttpServer httpServer, Class<?> classObject,
+                                                        String controllerEndPointUrl) {
+        Method[] controllerMethods = classObject.getDeclaredMethods();
         for (Method method : controllerMethods) {
             if (isMethodPublic(method)) {
-                createEndPointContext(method, httpServer);
+                createEndPointContext(method, controllerEndPointUrl, httpServer);
             }
         }
     }
@@ -57,11 +92,12 @@ public class EndpointRegistrar {
     /**
      * Creates an endpoint context for the given method on the HTTP server.
      *
-     * @param method     The method representing the endpoint.
-     * @param httpServer The HTTP server to create the endpoint context on.
+     * @param method                The method representing the endpoint.
+     * @param controllerEndPointUrl The base endpoint URL for the controller class.
+     * @param httpServer            The HTTP server to create the endpoint context on.
      */
-    private static void createEndPointContext(Method method, HttpServer httpServer) {
-        String endPointUrl = createEndPointUrl(method);
+    private static void createEndPointContext(Method method, String controllerEndPointUrl, HttpServer httpServer) {
+        String endPointUrl = createEndPointUrl(method, controllerEndPointUrl);
         httpServer.createContext(endPointUrl, exchange -> {
             try {
                 method.invoke(new SimulationController(), exchange);
@@ -78,14 +114,15 @@ public class EndpointRegistrar {
     /**
      * Creates the endpoint URL for the given method.
      *
-     * @param method The method to create the endpoint URL for.
+     * @param method                The method to create the endpoint URL for.
+     * @param controllerEndPointUrl The base endpoint URL for the controller class.
      * @return The endpoint URL for the given method.
      */
-    private static String createEndPointUrl(Method method) {
-        String endPointUrl = PATH_SIM + method.getName();
+    private static String createEndPointUrl(Method method, String controllerEndPointUrl) {
+        String endPointUrl = controllerEndPointUrl + method.getName();
         EndPoint endPointAnnotation = method.getAnnotation(EndPoint.class);
         if (endPointAnnotation != null) {
-            endPointUrl = createAnnotationEndPointUrl(endPointAnnotation);
+            endPointUrl = createAnnotationEndPointUrl(controllerEndPointUrl, endPointAnnotation);
         }
         return endPointUrl;
     }
@@ -93,11 +130,12 @@ public class EndpointRegistrar {
     /**
      * Creates an endpoint URL based on the provided EndPoint annotation.
      *
-     * @param endPointAnnotation The EndPoint annotation.
+     * @param controllerEndPointUrl The base endpoint URL for the controller class.
+     * @param endPointAnnotation    The EndPoint annotation.
      * @return The URL of the endpoint.
      */
-    private static String createAnnotationEndPointUrl(EndPoint endPointAnnotation) {
+    private static String createAnnotationEndPointUrl(String controllerEndPointUrl, EndPoint endPointAnnotation) {
         String endPointAnnotationValue = endPointAnnotation.value();
-        return PATH_SIM + endPointAnnotationValue;
+        return controllerEndPointUrl + endPointAnnotationValue;
     }
 }
