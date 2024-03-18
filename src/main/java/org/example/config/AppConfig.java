@@ -1,75 +1,44 @@
 package org.example.config;
 
 import com.sun.net.httpserver.HttpServer;
-import org.example.annotation.EndPoint;
-import org.example.controller.SimulationController;
 import org.example.service.LoggingService;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.InetSocketAddress;
 
+/**
+ * Configuration class for setting up a web application server.
+ * This class provides methods to start the application and set up the HTTP server.
+ */
 public class AppConfig {
     private static final int SERVER_PORT = 8080;
-    private static final String PATH_SIM = "/simulation/";
     private static HttpServer httpServer;
 
+    /**
+     * Sets-up a web-application server with the generated endpoints.
+     * <p>
+     * The server is launched and kept online.
+     */
     public static void startApplication() {
         setUpServer();
-        setSimulationControllerEndpointContexts();
+        EndpointRegistrar.registerEndpoints(httpServer);
         httpServer.setExecutor(null);
         httpServer.start();
     }
 
+    /**
+     * Sets up the HTTP server.
+     * <p>
+     * Attempts to create an HTTP server instance bound to the specified port {@code SERVER_PORT}.
+     *
+     * @throws IOException if an I/O error occurs when creating the server socket.
+     *                     For example, if the port is already in use.
+     */
     private static void setUpServer() {
         try {
             httpServer = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
         } catch (IOException e) {
             LoggingService.logInfo("Server could not be created.:" + e.getMessage(), AppConfig.class);
         }
-    }
-
-    private static void setSimulationControllerEndpointContexts() {
-        Method[] controllerMethods = SimulationController.class.getDeclaredMethods();
-        for (Method method : controllerMethods) {
-            if (isMethodPublic(method)) {
-                createEndPointContext(method);
-            }
-        }
-    }
-
-    private static boolean isMethodPublic(Method method) {
-        return Modifier.isPublic(method.getModifiers());
-    }
-
-    private static void createEndPointContext(Method method) {
-        String endPointUrl = createEndPointUrl(method);
-        httpServer.createContext(endPointUrl, exchange -> {
-            try {
-                method.invoke(new SimulationController(), exchange);
-            } catch (IllegalAccessException e) {
-                LoggingService.logInfo("Cannot reach method for endpoint creation. " +
-                        "Make sure the method is public.:" + e.getMessage(), AppConfig.class);
-            } catch (InvocationTargetException e) {
-                LoggingService.logInfo("Cannot invoke specified method: " +
-                        method.getName() + " : " + e.getMessage(), AppConfig.class);
-            }
-        });
-    }
-
-    private static String createEndPointUrl(Method method) {
-        String endPointUrl = PATH_SIM + method.getName();
-        EndPoint endPointAnnotation = method.getAnnotation(EndPoint.class);
-        if (endPointAnnotation != null) {
-            endPointUrl = createAnnotationEndPointUrl(endPointAnnotation);
-        }
-        return endPointUrl;
-    }
-
-    private static String createAnnotationEndPointUrl(EndPoint endPointAnnotation) {
-        String endPointAnnotationValue = endPointAnnotation.value();
-        return PATH_SIM + endPointAnnotationValue;
     }
 }
