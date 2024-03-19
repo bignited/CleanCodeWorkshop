@@ -6,10 +6,10 @@ import org.example.annotation.EndPoint;
 import org.example.service.SimulationService;
 
 @API(endpoint = "/simulation/")
-public class SimulationController implements Controller {
+public class SimulationIController implements IController {
     private final SimulationService simulationService;
 
-    public SimulationController() {
+    public SimulationIController() {
         this.simulationService = new SimulationService();
     }
 

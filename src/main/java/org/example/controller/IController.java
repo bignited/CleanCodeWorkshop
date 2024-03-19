@@ -6,7 +6,7 @@ import org.example.service.LoggingService;
 import java.io.IOException;
 import java.net.URI;
 
-public interface Controller {
+public interface IController {
 
     default void sendResponse(HttpExchange exchange, int statusCode, int responseLength, URI requestUri) {
         try {

@@ -3,7 +3,7 @@ package org.example.config;
 import com.sun.net.httpserver.HttpServer;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
-import org.example.controller.SimulationController;
+import org.example.controller.IController;
 import org.example.service.LoggingService;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -23,6 +23,7 @@ import java.util.Set;
  * Endpoint contexts are created only for public methods.
  */
 public class EndpointRegistrar {
+    private static IController controllerToRegister;
 
     /**
      * Registers endpoints on the provided HTTP server.
@@ -56,6 +57,7 @@ public class EndpointRegistrar {
         for (Class<?> classObject : classes) {
             API apiAnnotation = classObject.getAnnotation(API.class);
             if (apiAnnotation != null) {
+                initializeConstructor(classObject);
                 String controllerEndPointUrl = apiAnnotation.endpoint();
                 createEndPointContextsOfMethods(httpServer, classObject, controllerEndPointUrl);
             }
@@ -100,7 +102,7 @@ public class EndpointRegistrar {
         String endPointUrl = createEndPointUrl(method, controllerEndPointUrl);
         httpServer.createContext(endPointUrl, exchange -> {
             try {
-                method.invoke(new SimulationController(), exchange);
+                method.invoke(controllerToRegister, exchange);
             } catch (IllegalAccessException e) {
                 LoggingService.logInfo("Cannot reach method for endpoint creation. " +
                         "Make sure the method is public.:" + e.getMessage(), AppConfig.class);
@@ -109,6 +111,29 @@ public class EndpointRegistrar {
                         method.getName() + " : " + e.getMessage(), AppConfig.class);
             }
         });
+    }
+
+    /**
+     * Initializes the constructor of the given class.
+     *
+     * @param classToInitialize
+     */
+    private static void initializeConstructor(Class<?> classToInitialize) {
+        try {
+            controllerToRegister = (IController) classToInitialize.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException e) {
+            LoggingService.logInfo("Cannot instantiate class: " + classToInitialize.getName() +
+                    " : " + e.getMessage(), AppConfig.class);
+        } catch (InvocationTargetException e) {
+            LoggingService.logInfo("Cannot invoke constructor of class: " + classToInitialize.getName() +
+                    " : " + e.getMessage(), AppConfig.class);
+        } catch (IllegalAccessException e) {
+            LoggingService.logInfo("Cannot access constructor of class: " + classToInitialize.getName() +
+                    " : " + e.getMessage(), AppConfig.class);
+        } catch (NoSuchMethodException e) {
+            LoggingService.logInfo("No constructor found for class: " + classToInitialize.getName() +
+                    " : " + e.getMessage(), AppConfig.class);
+        }
     }
 
     /**
