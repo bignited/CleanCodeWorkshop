@@ -1,6 +1,7 @@
 package org.example.config;
 
 import com.sun.net.httpserver.HttpServer;
+import org.example.config.controller.EndpointRegistrar;
 import org.example.service.LoggingService;
 
 import java.io.IOException;

@@ -2,7 +2,7 @@ http://{{host}}:{{port}}/simulation/createBookstores
 
 > {%
     client.test("Request executed successfully", function() {
-        client.assert(response.status === 200, "Response status code is not 200, but " + response.status)
+        client.assert(response.status === 201, "Response status code is not 200, but " + response.status)
     })
 %}
 

@@ -1,8 +1,9 @@
-package org.example.config;
+package org.example.config.controller;
 
 import com.sun.net.httpserver.HttpServer;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
+import org.example.config.AppConfig;
 import org.example.controller.IController;
 import org.example.service.LoggingService;
 import org.reflections.Reflections;
@@ -56,11 +57,23 @@ public class EndpointRegistrar {
     private static void createEndPointContextsPerClass(Set<Class<?>> classes, HttpServer httpServer) {
         for (Class<?> classObject : classes) {
             API apiAnnotation = classObject.getAnnotation(API.class);
-            if (apiAnnotation != null) {
-                initializeConstructor(classObject);
-                String controllerEndPointUrl = apiAnnotation.endpoint();
-                createEndPointContextsOfMethods(httpServer, classObject, controllerEndPointUrl);
-            }
+            ifApiAnnotationIsNotNullCreateEndpointsOfControllerClass(apiAnnotation, classObject, httpServer);
+        }
+    }
+
+    /**
+     * If the {@link API} annotation is not null, creates endpoint contexts for the methods in the provided class.
+     *
+     * @param apiAnnotation The API annotation.
+     * @param classObject   The class to scan for
+     * @param httpServer    The HTTP server to set endpoint contexts on.
+     */
+    private static void ifApiAnnotationIsNotNullCreateEndpointsOfControllerClass(API apiAnnotation,
+                                                                                 Class<?> classObject, HttpServer httpServer) {
+        if (apiAnnotation != null) {
+            initializeConstructor(classObject);
+            String controllerEndPointUrl = apiAnnotation.endpoint();
+            createEndPointContextsOfMethods(httpServer, classObject, controllerEndPointUrl);
         }
     }
 
@@ -116,7 +129,7 @@ public class EndpointRegistrar {
     /**
      * Initializes the constructor of the given class.
      *
-     * @param classToInitialize
+     * @param classToInitialize The class to initialize the constructor for.
      */
     private static void initializeConstructor(Class<?> classToInitialize) {
         try {
@@ -146,6 +159,19 @@ public class EndpointRegistrar {
     private static String createEndPointUrl(Method method, String controllerEndPointUrl) {
         String endPointUrl = controllerEndPointUrl + method.getName();
         EndPoint endPointAnnotation = method.getAnnotation(EndPoint.class);
+        return ifEndPointAnnotationIsNotNullCreateEndPointUrl(endPointAnnotation, endPointUrl, controllerEndPointUrl);
+    }
+
+    /**
+     * If the {@link EndPoint} annotation is not null, creates an endpoint URL based on the annotation value.
+     *
+     * @param endPointAnnotation    The EndPoint annotation.
+     * @param endPointUrl           The URL of the endpoint.
+     * @param controllerEndPointUrl The base endpoint URL for the controller class.
+     * @return The URL of the endpoint.
+     */
+    private static String ifEndPointAnnotationIsNotNullCreateEndPointUrl(EndPoint endPointAnnotation, String endPointUrl,
+                                                                         String controllerEndPointUrl) {
         if (endPointAnnotation != null) {
             endPointUrl = createAnnotationEndPointUrl(controllerEndPointUrl, endPointAnnotation);
         }
