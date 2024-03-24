@@ -1,5 +1,6 @@
 package org.example.config.controller;
 
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
@@ -113,17 +114,15 @@ public class EndpointRegistrar {
      */
     private static void createEndPointContext(Method method, String controllerEndPointUrl, HttpServer httpServer) {
         String endPointUrl = createEndPointUrl(method, controllerEndPointUrl);
-        httpServer.createContext(endPointUrl, exchange -> {
-            try {
-                method.invoke(controllerToRegister, exchange);
-            } catch (IllegalAccessException e) {
-                LoggingService.logInfo("Cannot reach method for endpoint creation. " +
-                        "Make sure the method is public.:" + e.getMessage(), AppConfig.class);
-            } catch (InvocationTargetException e) {
-                LoggingService.logInfo("Cannot invoke specified method: " +
-                        method.getName() + " : " + e.getMessage(), AppConfig.class);
-            }
-        });
+        try {
+            httpServer.createContext(endPointUrl, (HttpHandler) method.invoke(controllerToRegister));
+        } catch (IllegalAccessException e) {
+            LoggingService.logInfo("Cannot access method: " + method.getName() + " : " + e.getMessage(),
+                    AppConfig.class);
+        } catch (InvocationTargetException e) {
+            LoggingService.logInfo("Cannot invoke method: " + method.getName() + " : " + e.getMessage(),
+                    AppConfig.class);
+        }
     }
 
     /**
