@@ -1,11 +1,14 @@
 package org.example.config.controller;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
 import org.example.config.AppConfig;
 import org.example.controller.IController;
+import org.example.model.controller.HttpMethod;
+import org.example.model.controller.HttpStatusCode;
 import org.example.service.LoggingService;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -115,7 +118,8 @@ public class EndpointRegistrar {
     private static void createEndPointContext(Method method, String controllerEndPointUrl, HttpServer httpServer) {
         String endPointUrl = createEndPointUrl(method, controllerEndPointUrl);
         try {
-            httpServer.createContext(endPointUrl, (HttpHandler) method.invoke(controllerToRegister));
+            httpServer.createContext(endPointUrl, createHttpHandler((HttpHandler) method.invoke(controllerToRegister),
+                    method.getAnnotation(EndPoint.class).method()));
         } catch (IllegalAccessException e) {
             LoggingService.logInfo("Cannot access method: " + method.getName() + " : " + e.getMessage(),
                     AppConfig.class);
@@ -123,6 +127,36 @@ public class EndpointRegistrar {
             LoggingService.logInfo("Cannot invoke method: " + method.getName() + " : " + e.getMessage(),
                     AppConfig.class);
         }
+    }
+
+    /**
+     * Creates an HTTP handler for the given request handler and HTTP method.
+     *
+     * @param requestHandler The request handler to create the HTTP handler for.
+     * @param httpMethod     The HTTP method for the handler.
+     * @return The HTTP handler for the given request handler and HTTP method.
+     */
+    private static HttpHandler createHttpHandler(HttpHandler requestHandler, HttpMethod httpMethod) {
+        return exchange -> {
+            if (requestMethodMatches(exchange, httpMethod)) {
+                requestHandler.handle(exchange);
+            } else {
+                HttpStatusCode httpStatusCode = HttpStatusCode.NOT_ALLOWED;
+                EndpointResponseBuilder.buildGetResponse(exchange, httpStatusCode.statusCodeMessage, httpStatusCode.statusCode);
+                exchange.close();
+            }
+        };
+    }
+
+    /**
+     * Checks if the request method matches the expected HTTP method.
+     *
+     * @param exchange           The HTTP exchange.
+     * @param expectedHttpMethod The expected HTTP method.
+     * @return true if the request method matches the expected HTTP method, false otherwise.
+     */
+    private static boolean requestMethodMatches(HttpExchange exchange, HttpMethod expectedHttpMethod) {
+        return exchange.getRequestMethod().equalsIgnoreCase(expectedHttpMethod.toString());
     }
 
     /**
@@ -185,7 +219,7 @@ public class EndpointRegistrar {
      * @return The URL of the endpoint.
      */
     private static String createAnnotationEndPointUrl(String controllerEndPointUrl, EndPoint endPointAnnotation) {
-        String endPointAnnotationValue = endPointAnnotation.value();
+        String endPointAnnotationValue = endPointAnnotation.url();
         return controllerEndPointUrl + endPointAnnotationValue;
     }
 }

@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
+import org.example.model.controller.HttpMethod;
 import org.example.model.controller.HttpStatusCode;
 import org.example.model.dto.AddBookStoreDto;
 import org.example.service.BookStoreService;
@@ -16,7 +17,7 @@ public class BookStoreController implements IController {
         this.bookStoreService = new BookStoreService();
     }
 
-    @EndPoint("add")
+    @EndPoint(url = "add", method = HttpMethod.POST)
     public HttpHandler addBookStore() {
         return exchange -> {
             if (exchange.getRequestMethod().equals("POST")) {

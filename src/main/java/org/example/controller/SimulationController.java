@@ -3,6 +3,7 @@ package org.example.controller;
 import com.sun.net.httpserver.HttpHandler;
 import org.example.annotation.API;
 import org.example.annotation.EndPoint;
+import org.example.model.controller.HttpMethod;
 import org.example.service.SimulationService;
 
 @API(endpoint = "/simulation/")
@@ -13,15 +14,19 @@ public class SimulationController implements IController {
         this.simulationService = new SimulationService();
     }
 
-    @EndPoint(value = "start")
+    @EndPoint(url = "start", method = HttpMethod.GET)
     public HttpHandler startSimulation() {
         return exchange -> {
-            simulationService.runSimulation();
-            sendResponse(exchange, 200, "Simulation started!");
+            if(exchange.getRequestMethod().equals("GET")) {
+                simulationService.runSimulation();
+                sendResponse(exchange, 200, "Simulation started!");
+            } else {
+                sendResponse(exchange, 405, "Method not allowed!");
+            }
         };
     }
 
-    @EndPoint(value = "createBookstores")
+    @EndPoint(url = "createBookstores", method = HttpMethod.GET)
     public HttpHandler runBookStoreCreationSimulation() {
         return exchange -> {
             simulationService.runBookStoreCreationSimulation();
@@ -29,7 +34,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "addBooksToBookstore")
+    @EndPoint(url = "addBooksToBookstore", method = HttpMethod.GET)
     public HttpHandler runBookStoreAddBooksSimulation() {
         return exchange -> {
             simulationService.runBookStoreAddBooksSimulation();
@@ -37,7 +42,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getAllBooksFilteredByTitle")
+    @EndPoint(url = "getAllBooksFilteredByTitle", method = HttpMethod.GET)
     public HttpHandler runFilterBooksByTitleSimulation() {
         return exchange -> {
             simulationService.runFilterBooksByTitleSimulation();
@@ -45,7 +50,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getTopRatedBooks")
+    @EndPoint(url = "getTopRatedBooks", method = HttpMethod.GET)
     public HttpHandler runTopRatedBooksSimulation() {
         return exchange -> {
             simulationService.runTopRatedBooksSimulation();
@@ -53,7 +58,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "updateBooks")
+    @EndPoint(url = "updateBooks", method = HttpMethod.GET)
     public HttpHandler runUpdateBookSimulation() {
         return exchange -> {
             simulationService.runTopRatedBooksSimulation();
@@ -61,7 +66,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "removeBooks")
+    @EndPoint(url = "removeBooks", method = HttpMethod.GET)
     public HttpHandler runRemoveBookSimulation() {
         return exchange -> {
             simulationService.runRemoveBookSimulation();
@@ -69,7 +74,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getAllBooksOrderedByPrice")
+    @EndPoint(url = "getAllBooksOrderedByPrice", method = HttpMethod.GET)
     public HttpHandler runOrderBooksByPriceSimulation() {
         return exchange -> {
             simulationService.runOrderBooksByPriceSimulation();
@@ -77,7 +82,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getTotalAmountOfBooks")
+    @EndPoint(url = "getTotalAmountOfBooks", method = HttpMethod.GET)
     public HttpHandler runGetTotalBooksFromStoreSimulation() {
         return exchange -> {
             simulationService.runGetTotalBooksFromStoreSimulation();
@@ -85,7 +90,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getTotalBookPrice")
+    @EndPoint(url = "getTotalBookPrice", method = HttpMethod.GET)
     public HttpHandler runGetTotalBookPriceFromBookStoreSimulation() {
         return exchange -> {
             simulationService.runGetTotalBookPriceFromBookStoreSimulation();
@@ -93,7 +98,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getAverageBookPrice")
+    @EndPoint(url = "getAverageBookPrice", method = HttpMethod.GET)
     public HttpHandler runGetAverageBookPriceFromBookStoreSimulation() {
         return exchange -> {
             simulationService.runGetAverageBookPriceFromBookStoreSimulation();
@@ -101,7 +106,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "sellBooks")
+    @EndPoint(url = "sellBooks", method = HttpMethod.GET)
     public HttpHandler runSellBookSimulation() {
         return exchange -> {
             simulationService.runSellBookSimulation();
@@ -109,7 +114,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getTotalRevenue")
+    @EndPoint(url = "getTotalRevenue", method = HttpMethod.GET)
     public HttpHandler runTotalRevenueSimulation() {
         return exchange -> {
             simulationService.runTotalRevenueSimulation();
@@ -117,7 +122,7 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getTotalBooksSold")
+    @EndPoint(url = "getTotalBooksSold", method = HttpMethod.GET)
     public HttpHandler runTotalBooksSoldSimulation() {
         return exchange -> {
             simulationService.runTotalBooksSoldSimulation();
@@ -125,18 +130,11 @@ public class SimulationController implements IController {
         };
     }
 
-    @EndPoint(value = "getAllBooksOrderedByRating")
+    @EndPoint(url = "getAllBooksOrderedByRating", method = HttpMethod.GET)
     public HttpHandler runBooksByRatingRangeSimulation() {
         return exchange -> {
             simulationService.runBooksByRatingRangeSimulation();
             sendResponse(exchange, 200, "Get all books ordered by rating.");
-        };
-    }
-
-    public HttpHandler runBooksSortedByPriceSimulation() {
-        return exchange -> {
-            simulationService.runBooksSortedByPriceSimulation();
-            sendResponse(exchange, 200, "Get all books sorted by price.");
         };
     }
 }
